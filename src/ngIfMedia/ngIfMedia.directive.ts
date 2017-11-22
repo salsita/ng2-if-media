@@ -14,7 +14,7 @@ export class NgIfMediaDirective implements OnDestroy {
   set ngIfMedia(query: string) {
     this.media = query;
     this.updateDisplay();
-  };
+  }
 
   constructor(private templateRef: TemplateRef<any>,
               private viewContainer: ViewContainerRef,
