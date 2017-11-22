@@ -1,38 +1,24 @@
 import {
-  Directive, Input, OnDestroy, TemplateRef, ViewContainerRef
+  Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef
 } from '@angular/core';
 import { NgIfMediaService } from './ngIfMedia.service';
 
 @Directive({
   selector: '[ngIfMedia]'
 })
-export class NgIfMediaDirective implements OnDestroy {
+export class NgIfMediaDirective implements OnDestroy, OnInit {
   private media: string;
   private hidden = true;
 
   @Input()
   set ngIfMedia(query: string) {
     this.media = query;
-    this.updateDisplay();
   }
 
-  constructor(private templateRef: TemplateRef<any>,
-              private viewContainer: ViewContainerRef,
-              private service: NgIfMediaService) {
-    service.register(this);
-  }
+  constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private mediaService: NgIfMediaService) {}
 
-
-  onResize() {
-    this.updateDisplay();
-  }
-
-  updateDisplay() {
-    if (this.service.isMedia(this.media)) {
-      this.show();
-    } else {
-      this.hide();
-    }
+  ngOnInit() {
+    this.mediaService.register(this, this.media);
   }
 
   hide() {
@@ -50,6 +36,6 @@ export class NgIfMediaDirective implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.service.deregister(this);
+    this.mediaService.deregister(this);
   }
 }
