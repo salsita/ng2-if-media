@@ -9,7 +9,7 @@ export class BreakPointsParser {
     for (let query of queries) {
       query = query.trim();
       const orEq = query[1] === '=';
-      const breakPoint = breakpoints[query.replace(/^(<|>)=?/, '')];
+      const breakPoint = breakpoints[query.replace(/^(<|>)?=?/, '')];
 
       if (!breakPoint) {
         resultQueries.push(query);
