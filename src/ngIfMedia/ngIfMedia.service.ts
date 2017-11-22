@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgIfMediaDirective } from './ngIfMedia.directive';
 
 import { breakpoints } from './breakpoints';
+import { BreakPointsParser } from './breakpointsParser';
 
 @Injectable()
 export class NgIfMediaService {
@@ -17,8 +18,8 @@ export class NgIfMediaService {
   }
 
   public isMedia(query): boolean {
-    const media = breakpoints[query] || query;
-    return typeof window !== 'undefined' && window.matchMedia(media).matches;
+    const mediaQuery = BreakPointsParser.parseQuery(query);
+    return typeof window !== 'undefined' && window.matchMedia(mediaQuery).matches;
   }
 
   public register(element: NgIfMediaDirective) {
@@ -34,9 +35,11 @@ export class NgIfMediaService {
       clearTimeout(this.notificationTimeout);
     }
 
+    this.inDebounce = true;
     this.notificationTimeout = setTimeout(() => {
       this.elements.forEach(el => {
         el.onResize();
+        this.inDebounce = false;
       });
     }, this.debounceTime);
   }

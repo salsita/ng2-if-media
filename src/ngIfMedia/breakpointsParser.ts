@@ -1,8 +1,8 @@
 import { breakpoints } from './breakpoints';
 
 // FIXME: Replace regexes with smth faster?
-export class BreakPointParser {
-  static parse(input: string): string {
+export class BreakPointsParser {
+  static parseQuery(input: string): string {
     const resultQueries = [];
     const queries = input.split(',');
 
