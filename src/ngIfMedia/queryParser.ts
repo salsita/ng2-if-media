@@ -1,15 +1,14 @@
-import { breakpoints } from './breakpoints';
+export class QueryParser {
+  constructor(private breakpoints) {}
 
-// FIXME: Replace regexes with smth faster?
-export class BreakPointsParser {
-  static parseQuery(input: string): string {
+  public parseQuery(input: string): string {
     const resultQueries = [];
     const queries = input.split(',');
 
     for (let query of queries) {
       query = query.trim();
       const orEq = query[1] === '=';
-      const breakPoint = breakpoints[query.replace(/^(<|>)?=?/, '')];
+      const breakPoint = this.breakpoints[query.replace(/^(<|>)?=?/, '')];
 
       if (!breakPoint) {
         resultQueries.push(query);
@@ -50,6 +49,3 @@ export class BreakPointsParser {
     return resultQueries.join(' and ');
   }
 }
-
-// FIXME: Remove console.log
-// console.log(BreakPointParser.parse('<=phoneW, >phoneH, (max-width: 1139px) and (min-width: 960px), <=phonePortraitH'));

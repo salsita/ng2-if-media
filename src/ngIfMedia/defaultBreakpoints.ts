@@ -1,4 +1,4 @@
-export const breakpoints = {
+export const defaultBreakpoints = {
   phoneW: {
     param: 'width',
     value: '320px'

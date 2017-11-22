@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BreakPointsParser } from './breakpointsParser';
-
+import { Inject, Injectable } from '@angular/core';
+import { BREAKPOINTS } from './ngIfMedia.config';
+import { QueryParser } from './queryParser';
 
 class ReflectionContainer {
   private service: NgIfMediaService;
@@ -25,8 +25,10 @@ export class NgIfMediaService {
   debounceTime = 100;
   inDebounce = false;
   notificationTimeout;
+  parser;
 
-  constructor() {
+  constructor(@Inject(BREAKPOINTS) breakpoints) {
+    this.parser = new QueryParser(breakpoints);
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', this.onResize.bind(this));
     }
@@ -41,7 +43,7 @@ export class NgIfMediaService {
       return false;
     }
 
-    const mediaQuery = BreakPointsParser.parseQuery(query);
+    const mediaQuery = this.parser.parseQuery(query);
     return window.matchMedia(mediaQuery).matches;
   }
 
