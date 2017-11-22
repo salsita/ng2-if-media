@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { BREAKPOINTS } from './ngIfMedia.config';
+import { CONFIG } from './ngIfMedia.config';
 import { QueryParser } from './queryParser';
 
 class ReflectionContainer {
@@ -27,8 +27,9 @@ export class NgIfMediaService {
   notificationTimeout;
   parser;
 
-  constructor(@Inject(BREAKPOINTS) breakpoints) {
-    this.parser = new QueryParser(breakpoints);
+  constructor(@Inject(CONFIG) config) {
+    this.debounceTime = config.debounceTime;
+    this.parser = new QueryParser(config.breakpoints);
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', this.onResize.bind(this));
     }

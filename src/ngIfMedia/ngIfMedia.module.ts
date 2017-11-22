@@ -1,15 +1,16 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { NgIfMediaDirective } from './ngIfMedia.directive';
 import { NgIfMediaService } from './ngIfMedia.service';
+import { defaultConfig } from './default.config';
+import { CONFIG } from './ngIfMedia.config';
 import { defaultBreakpoints } from './defaultBreakpoints';
-import { BREAKPOINTS } from './ngIfMedia.config';
 
 @NgModule({
   imports: [
   ],
   providers: [
     NgIfMediaService,
-    { provide: BREAKPOINTS, useValue: defaultBreakpoints }
+    { provide: CONFIG, useValue: defaultConfig }
   ],
   declarations: [
     NgIfMediaDirective
@@ -19,20 +20,14 @@ import { BREAKPOINTS } from './ngIfMedia.config';
   ]
 })
 export class NgIfMediaModule {
-  static addBreakpoints(breakpoints): ModuleWithProviders {
+  static withConfig(config): ModuleWithProviders {
+    if (config.defaultBreakpoints) {
+      config.breakpoints = Object.assign(defaultBreakpoints, config.breakpoints);
+    }
     return {
       ngModule: this,
       providers: [
-        { provide: BREAKPOINTS, useValue: Object.assign(defaultBreakpoints, breakpoints) }
-      ]
-    };
-  }
-
-  static withBreakpoints(breakpoints): ModuleWithProviders {
-    return {
-      ngModule: this,
-      providers: [
-        { provide: BREAKPOINTS, useValue: breakpoints }
+        { provide: CONFIG, useValue: Object.assign(defaultConfig, config) }
       ]
     };
   }

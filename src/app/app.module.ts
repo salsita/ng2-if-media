@@ -10,7 +10,16 @@ import { NgIfMediaModule } from '../ngIfMedia/ngIfMedia.module';
   ],
   imports: [
     BrowserModule,
-    NgIfMediaModule
+    NgIfMediaModule.withConfig({
+      debounceTime: 100,
+      defaultBreakpoints: true,
+      breakpoints: {
+        phoneH: {
+          value: '300px',
+          param: 'height'
+        }
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

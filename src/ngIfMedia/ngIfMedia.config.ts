@@ -1,3 +1,3 @@
 import { InjectionToken } from '@angular/core';
 
-export let BREAKPOINTS = new InjectionToken('ngIfMedia.config');
+export let CONFIG = new InjectionToken('ngIfMedia.config');
