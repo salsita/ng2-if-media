@@ -18,7 +18,7 @@ export class NgIfMediaDirective implements OnDestroy, OnInit {
   constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private mediaService: NgIfMediaService) {}
 
   ngOnInit() {
-    this.mediaService.register(this, this.media);
+    this.mediaService.registerElement(this, this.media);
   }
 
   hide() {
@@ -36,6 +36,6 @@ export class NgIfMediaDirective implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    this.mediaService.deregister(this);
+    this.mediaService.deregisterElement(this);
   }
 }

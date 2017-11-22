@@ -1,6 +1,22 @@
 import { Injectable } from '@angular/core';
-import { NgIfMediaDirective } from './ngIfMedia.directive';
 import { BreakPointsParser } from './breakpointsParser';
+
+
+class ReflectionContainer {
+  private service: NgIfMediaService;
+
+  constructor(service: NgIfMediaService) {
+    this.service = service;
+  }
+
+  public on(query, matchFn) {
+    this.service.addReflection(this, query, matchFn);
+  }
+
+  public deregister() {
+    this.service.removeReflection(this);
+  }
+}
 
 @Injectable()
 export class NgIfMediaService {
@@ -14,6 +30,10 @@ export class NgIfMediaService {
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', this.onResize.bind(this));
     }
+  }
+
+  public register() {
+    return new ReflectionContainer(this);
   }
 
   public isMedia(query): boolean {
@@ -38,28 +58,25 @@ export class NgIfMediaService {
     }, this.debounceTime);
   }
 
-  public addReflection(component, { query, success = () => {}, failure = () => {} }) {
-    const arr = this.reflections.get(component) || [];
-    this.reflections.set(component, arr.concat({ query, success, failure }));
+  public addReflection(container, query, matchFn) {
+    const arr = this.reflections.get(container) || [];
+    this.reflections.set(container, arr.concat({query, matchFn}));
+    matchFn(this.isMedia(query));
   }
 
-  public removeReflection(component) {
-    this.reflections.delete(component);
+  public removeReflection(container) {
+    this.reflections.delete(container);
   }
 
   private notifyReflections() {
     this.reflections.forEach(val => {
-      for (const { query, success, failure } of val) {
-        if (this.isMedia(query)) {
-          success();
-        } else {
-          failure();
-        }
+      for (const { query, matchFn } of val) {
+        matchFn(this.isMedia(query));
       }
     });
   }
 
-  public register(element: NgIfMediaDirective, query: string) {
+  public registerElement(element, query: string) {
     this.elements.set(element, query);
     if (this.isMedia(query)) {
       element.show();
@@ -68,7 +85,7 @@ export class NgIfMediaService {
     }
   }
 
-  public deregister(element: NgIfMediaDirective) {
+  public deregisterElement(element) {
     this.elements.delete(element);
   }
 

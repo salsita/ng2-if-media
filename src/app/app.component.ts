@@ -7,27 +7,20 @@ import { NgIfMediaService } from '../ngIfMedia/ngIfMedia.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'app';
-  responsiveText = 'Wtf';
+  mediaContainer;
+  responsiveText = 'WTF';
+  anotherResponsiveText;
 
   constructor(private mediaService: NgIfMediaService) {
+    this.mediaContainer = this.mediaService.register();
   }
 
   ngOnInit() {
-    this.mediaService.addReflection(
-      this,
-      {
-        query: '<=mobile',
-        success: () => {
-          this.responsiveText = 'MOBILE!!!!!';
-        },
-        failure: () => {
-          this.responsiveText = 'DESKTOP!!!';
-        }
-      });
+    this.mediaContainer.on('<tablet', (match) => { this.responsiveText = match ? '< TABLET' : '> TABLET'; });
+    this.mediaContainer.on('=phoneH', (match) => { this.anotherResponsiveText = match ? '= phoneH' : '!= phoneH'; });
   }
 
   ngOnDestroy() {
-    this.mediaService.removeReflection(this);
+    this.mediaContainer.deregister();
   }
 }
