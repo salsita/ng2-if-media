@@ -15,7 +15,7 @@ import { NgIfMediaModule } from '../ngIfMedia/ngIfMedia.module';
       defaultBreakpoints: true,
       breakpoints: {
         phoneH: {
-          value: '300px',
+          value: '800px',
           param: 'height'
         }
       }

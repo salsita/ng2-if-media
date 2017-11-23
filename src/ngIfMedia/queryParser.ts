@@ -1,9 +1,15 @@
 export class QueryParser {
   constructor(private breakpoints) {}
 
-  public parseQuery(input: string): string {
-    const resultQueries = [];
+  public parseQuery(input: string) {
     const queries = input.split(',');
+
+    return queries.map(query => this.parseSingleQuery(query)).join(',');
+  }
+
+  public parseSingleQuery(input: string): string {
+    const resultQueries = [];
+    const queries = input.split('and');
 
     let possibleMedia = '';
     for (let query of queries) {

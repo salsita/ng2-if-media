@@ -50,16 +50,16 @@ const breakpoints = {
 };
 
 const parser = new QueryParser(breakpoints);
-// console.log(parser.parseQuery('<=10.30002em, <widescreenW, <retina3x, <phonePortraitH'));
+// console.log(parser.parseQuery('<=10.30002em and <widescreenW, braille and <retina3x and <phonePortraitH'));
 describe('QueryParser', () => {
   it('should let use breakpoints with no media type and with some media type together', async(() => {
-    const result = parser.parseQuery('braille, tablet');
+    const result = parser.parseQuery('braille and tablet');
     expect(result).toBeTruthy();
   }));
 
   it('should use proper precision with each query', async(() => {
-    const result = parser.parseQuery('<=10.30002em, <widescreenW, <retina3x, <phonePortraitH');
-    expect(result).toBe('(max-width: 10.30002em) and (max-width: 1139px) and (max-device-pixel-ratio: 1.9) and (max-height: 799.9) and (orientation: portrait)');
+    const result = parser.parseQuery('<=10.30002em and <widescreenW, braille and <retina3x and <phonePortraitH');
+    expect(result).toBe('(max-width: 10.30002em) and (max-width: 1139px),braille and (max-device-pixel-ratio: 1.9) and (max-height: 799.9) and (orientation: portrait)');
   }));
 
   it('should add media to the beginning', async(() => {
@@ -69,6 +69,6 @@ describe('QueryParser', () => {
   }));
 
   it('should throw error when breakpoints with 2 different media types are present', async(() => {
-    expect(() => parser.parseQuery('braille, mobile')).toThrowError();
+    expect(() => parser.parseQuery('braille and mobile')).toThrowError();
   }));
 });
