@@ -9,7 +9,7 @@ export class QueryParser {
 
   public parseSingleQuery(input: string): string {
     const resultQueries = [];
-    const queries = input.split('and');
+    const queries = input.split(' and ');
 
     let possibleMedia = '';
     for (let query of queries) {
@@ -17,7 +17,6 @@ export class QueryParser {
       const canBeEqual = query[1] === '=';
       const withoutComparison = query.replace(/^(<|>)?=?/, '');
       let breakpoint = this.breakpoints[withoutComparison];
-
 
       // If no breakpoint was found, treat as exact media query unless it can be interpreted as a number, e.g. '<980px'
       if (parseFloat(withoutComparison)) {

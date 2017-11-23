@@ -3,7 +3,7 @@ import { NgIfMediaDirective } from './ngIfMedia.directive';
 import { NgIfMediaService } from './ngIfMedia.service';
 import { defaultConfig } from './default.config';
 import { CONFIG } from './ngIfMedia.config';
-import { defaultBreakpoints } from './defaultBreakpoints';
+import { vendorBreakpoints } from './defaultBreakpoints';
 
 @NgModule({
   imports: [
@@ -21,8 +21,8 @@ import { defaultBreakpoints } from './defaultBreakpoints';
 })
 export class NgIfMediaModule {
   static withConfig(config): ModuleWithProviders {
-    if (config.defaultBreakpoints) {
-      config.breakpoints = Object.assign(defaultBreakpoints, config.breakpoints);
+    if (config.vendorBreakpoints) {
+      config.breakpoints = Object.assign(vendorBreakpoints[config.vendorBreakpoints], config.breakpoints);
     }
     return {
       ngModule: this,
