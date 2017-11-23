@@ -41,3 +41,13 @@ export const defaultBreakpoints = {
   landscape: '(orientation: landscape)',
   iPhone: 'only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait)'
 };
+
+export const vendorBreakpoints = {
+  bootstrap: {
+    xs: '(max-width: 575px)',
+    sm: '(min-width: 576px)',
+    md: '(min-width: 768px)',
+    lg: '(min-width: 992px)',
+    xl: '(min-width: 1200px)'
+  }
+};

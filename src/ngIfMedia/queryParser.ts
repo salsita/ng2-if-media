@@ -8,23 +8,29 @@ export class QueryParser {
     let possibleMedia = '';
     for (let query of queries) {
       query = query.trim();
-      const orEq = query[1] === '=';
-      const breakpointName = query.replace(/^(<|>)?=?/, '');
-      const breakpoint = this.breakpoints[breakpointName];
+      const canBeEqual = query[1] === '=';
+      const withoutComparison = query.replace(/^(<|>)?=?/, '');
+      let breakpoint = this.breakpoints[withoutComparison];
 
-      if (!breakpoint) {
+      // FIXME: Add or logic (isMedia(x) || isMedia(y))
+
+      // If no breakpoint was found, treat as exact media query unless it can be interpreted as a number, e.g. '<980px'
+      if (parseFloat(withoutComparison)) {
+        breakpoint = {
+          param: 'width',
+          value: withoutComparison
+        };
+      } else if (!breakpoint) {
         resultQueries.push(query);
         continue;
       }
 
-      // FIXME: Add '<980px' possibility -> if 980px isn't a breakpoint and it's possible to be parseInt-ed just decrease it by 1 and go with max/min width
-      // FIXME: Add or logic (isMedia(x) || isMedia(y))
       if (typeof breakpoint === 'string') {
         resultQueries.push(breakpoint);
         continue;
       }
 
-      const {value, param, precision, media, suffix} = breakpoint;
+      const media = breakpoint.media;
 
       if (!possibleMedia && media) {
         possibleMedia = media;
@@ -34,15 +40,31 @@ export class QueryParser {
         throw new Error(`Clash of media property used for different breakpoints in ${breakpoint}`);
       }
 
+      const {value, param } = breakpoint;
       let numValue = value;
       let units = '';
-      const precisionVal = orEq ? 0 : precision || 1;
 
+      let precisionVal;
       if (typeof value === 'string') {
         const match = breakpoint.value.match(/[a-zA-Z]+/);
-        const index = match && match.index;
-        numValue = parseFloat(value.slice(0, index));
-        units = value.slice(index);
+        const unitIndex = (match && match.index) || value.length;
+        const number = value.slice(0, unitIndex);
+        numValue = parseFloat(number);
+        units = value.slice(unitIndex);
+
+        if (number.includes('.')) {
+          precisionVal = 1 / (10 ** (unitIndex - number.indexOf('.') - 1));
+        }
+      }
+
+      if (canBeEqual) {
+        precisionVal = 0;
+      } else if (breakpoint.precision) {
+        precisionVal = breakpoint.precision;
+      } else if (units === 'px') {
+        precisionVal = 1;
+      } else if (!precisionVal) {
+        precisionVal = 0.1;
       }
 
       // Can also use no value, e.g. { media: 'screen' }
@@ -62,6 +84,7 @@ export class QueryParser {
         query = '';
       }
 
+      const suffix = breakpoint.suffix;
       if (suffix) {
         query = query ? `${query} and ${suffix}` : suffix;
       }

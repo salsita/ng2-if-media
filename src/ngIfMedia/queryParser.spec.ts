@@ -50,11 +50,16 @@ const breakpoints = {
 };
 
 const parser = new QueryParser(breakpoints);
-
+// console.log(parser.parseQuery('<=10.30002em, <widescreenW, <retina3x, <phonePortraitH'));
 describe('QueryParser', () => {
   it('should let use breakpoints with no media type and with some media type together', async(() => {
     const result = parser.parseQuery('braille, tablet');
     expect(result).toBeTruthy();
+  }));
+
+  it('should use proper precision with each query', async(() => {
+    const result = parser.parseQuery('<=10.30002em, <widescreenW, <retina3x, <phonePortraitH');
+    expect(result).toBe('(max-width: 10.30002em) and (max-width: 1139px) and (max-device-pixel-ratio: 1.9) and (max-height: 799.9) and (orientation: portrait)');
   }));
 
   it('should add media to the beginning', async(() => {
