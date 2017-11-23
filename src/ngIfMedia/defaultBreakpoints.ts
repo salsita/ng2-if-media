@@ -37,5 +37,6 @@ export const defaultBreakpoints = {
     value: 800,
     unit: 'px',
     suffix: '(orientation: portrait)'
-  }
+  },
+  iPhone: 'only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait)'
 };

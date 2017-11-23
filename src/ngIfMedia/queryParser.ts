@@ -17,7 +17,7 @@ export class QueryParser {
 
       // Expressions should be used first
       if (typeof breakPoint === 'string') {
-        resultQueries.unshift(query);
+        resultQueries.unshift(breakPoint);
         continue;
       }
 
