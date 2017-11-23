@@ -16,8 +16,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.mediaContainer.on('<tablet', (match) => { this.responsiveText = match ? '< TABLET' : '> TABLET'; });
-    this.mediaContainer.on('=phoneH', (match) => { this.anotherResponsiveText = match ? '= phoneH' : '!= phoneH'; });
+    this.mediaContainer.if('<tablet', (match) => { console.log('aaaaaaaa'); this.responsiveText = match ? '< TABLET' : '> TABLET'; });
+    this.mediaContainer.if('=phoneH', (match) => { this.anotherResponsiveText = match ? '= phoneH' : '!= phoneH'; });
   }
 
   ngOnDestroy() {

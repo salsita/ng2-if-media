@@ -9,7 +9,7 @@ class ReflectionContainer {
     this.service = service;
   }
 
-  public on(query, matchFn) {
+  public if(query, matchFn) {
     this.service.addReflection(this, query, matchFn);
   }
 
@@ -63,8 +63,9 @@ export class NgIfMediaService {
 
   public addReflection(container, query, matchFn) {
     const arr = this.reflections.get(container) || [];
-    this.reflections.set(container, arr.concat({query, matchFn}));
-    matchFn(this.isMedia(query));
+    const matches = this.isMedia(query);
+    this.reflections.set(container, arr.concat({query, matchFn, matches}));
+    matchFn(matches);
   }
 
   public removeReflection(container) {
@@ -72,10 +73,17 @@ export class NgIfMediaService {
   }
 
   private notifyReflections() {
-    this.reflections.forEach(val => {
-      for (const { query, matchFn } of val) {
-        matchFn(this.isMedia(query));
+    this.reflections.forEach((val, container) => {
+      const newVal = [];
+      for (const { query, matchFn, matches } of val) {
+        const newMatch = this.isMedia(query);
+        if (matches !== newMatch) {
+          matchFn(newMatch);
+        }
+        newVal.push({query, matchFn, matches: newMatch});
       }
+
+      this.reflections.set(container, newVal);
     });
   }
 
