@@ -15,6 +15,12 @@ export class QueryParser {
         continue;
       }
 
+      // Expressions should be used first
+      if (typeof breakPoint === 'string') {
+        resultQueries.unshift(query);
+        continue;
+      }
+
       const {value, param, precision} = breakPoint;
 
       let numValue = value;
