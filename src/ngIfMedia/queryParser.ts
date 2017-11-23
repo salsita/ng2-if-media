@@ -5,53 +5,73 @@ export class QueryParser {
     const resultQueries = [];
     const queries = input.split(',');
 
+    let possibleMedia = '';
     for (let query of queries) {
       query = query.trim();
       const orEq = query[1] === '=';
-      const breakPoint = this.breakpoints[query.replace(/^(<|>)?=?/, '')];
+      const breakpointName = query.replace(/^(<|>)?=?/, '');
+      const breakpoint = this.breakpoints[breakpointName];
 
-      if (!breakPoint) {
+      if (!breakpoint) {
         resultQueries.push(query);
         continue;
       }
 
-      // Expressions should be used first
-      if (typeof breakPoint === 'string') {
-        resultQueries.unshift(breakPoint);
+      // FIXME: Add '<980px' possibility -> if 980px isn't a breakpoint and it's possible to be parseInt-ed just decrease it by 1 and go with max/min width
+      // FIXME: Add or logic (isMedia(x) || isMedia(y))
+      if (typeof breakpoint === 'string') {
+        resultQueries.push(breakpoint);
         continue;
       }
 
-      const {value, param, precision} = breakPoint;
+      const {value, param, precision, media, suffix} = breakpoint;
+
+      if (!possibleMedia && media) {
+        possibleMedia = media;
+      }
+
+      if (media && media !== possibleMedia) {
+        throw new Error(`Clash of media property used for different breakpoints in ${breakpoint}`);
+      }
 
       let numValue = value;
       let units = '';
       const precisionVal = orEq ? 0 : precision || 1;
 
       if (typeof value === 'string') {
-        const match = breakPoint.value.match(/[a-zA-Z]+/);
+        const match = breakpoint.value.match(/[a-zA-Z]+/);
         const index = match && match.index;
         numValue = parseFloat(value.slice(0, index));
         units = value.slice(index);
       }
 
-      switch (query[0]) {
-        case '<':
-          query = `(max-${breakPoint.param}: ${numValue - precisionVal}${units})`;
-          break;
-        case '>':
-          query = `(min-${breakPoint.param}: ${numValue + precisionVal}${units})`;
-          break;
-        default:
-          query = `(${breakPoint.param}: ${value})`;
-          break;
+      // Can also use no value, e.g. { media: 'screen' }
+      if (value) {
+        switch (query[0]) {
+          case '<':
+            query = `(max-${breakpoint.param}: ${numValue - precisionVal}${units})`;
+            break;
+          case '>':
+            query = `(min-${breakpoint.param}: ${numValue + precisionVal}${units})`;
+            break;
+          default:
+            query = `(${breakpoint.param}: ${value})`;
+            break;
+        }
+      } else {
+        query = '';
       }
 
-      if (breakPoint.suffix) {
-        query = `${query} and ${breakPoint.suffix}`;
+      if (suffix) {
+        query = query ? `${query} and ${suffix}` : suffix;
       }
-      resultQueries.push(query);
+
+      if (query) {
+        resultQueries.push(query);
+      }
     }
 
-    return resultQueries.join(' and ');
+    const prefix = possibleMedia ? possibleMedia + ' and ' : '';
+    return prefix + resultQueries.join(' and ');
   }
 }
