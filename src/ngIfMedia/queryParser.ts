@@ -18,7 +18,6 @@ export class QueryParser {
       const withoutComparison = query.replace(/^(<|>)?=?/, '');
       let breakpoint = this.breakpoints[withoutComparison];
 
-      // FIXME: Add or logic (isMedia(x) || isMedia(y))
 
       // If no breakpoint was found, treat as exact media query unless it can be interpreted as a number, e.g. '<980px'
       if (parseFloat(withoutComparison)) {
