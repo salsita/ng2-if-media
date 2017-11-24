@@ -1,62 +1,58 @@
 # ngIfMedia
 
-A flexible directive/service module for handling media types and queries in Angular 2+, inspired by [include-media](https://include-media.com/) methodology.  
+A flexible directive/service module for handling media types and queries in Angular 2+, inspired by [include-media](https://include-media.com/).  
   
-Server rendering (universal) compatible.
+Server rendering ([Universal](https://universal.angular.io/)) compatible.
 
 `npm install --save ng-if-media`
 
 ```ts
 import { ngIfMediaModule } from 'ngIfMedia';
 
+const mediaConfig = {
+  breakpoints: {
+    tablet: {
+      value: '768px',
+      param: 'width'
+    },
+    budgetHeight: {
+      value: '480px',
+      param: 'height'
+    },
+    widescreen: {
+      value: '1280px',
+      param: 'width'
+    },
+    print: {
+      media: 'print'
+    },
+    landscape: '(orientation: landscape)'
+  },
+  vendorBreakpoints: ['bootstrap'],  // include 3rd party namespace
+  debounceTime: 100
+};
+
 @NgModule({
-  declarations: [ ... ],
-  imports: [
-    ngIfMediaModule.withConfig({
-      breakpoints: {
-        tablet: {
-          value: '768px',
-          param: 'width'
-        },
-        mobileHeight: {
-          value: '667px',
-          param: 'height'
-        },
-        widescreen: {
-          value: '1280px',
-          param: 'width'
-        },
-        print: {
-          media: 'print'
-        },
-        landscape: '(orientation: landscape)',
-        iPhone5: 'only screen and (min-device-width: 320px) and max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2)'
-      },
-      vendorBreakpoints: ['bootstrap'],  // include 3rd party namespace
-      debounceTime: 100
-    })
-  ],
-  providers: [ ... ],
-  bootstrap: [ ... ]
+  imports: [ngIfMediaModule.withConfig(mediaConfig)]
 })
 ```
 
 ## Features
 
-`ngIfMedia` allows enhancing configured breakpoints with `<, >, =` logical operators, allowing expressive yet highly intuitive control over your UI. Passive `resize` updates are handled automatically during the component lifetime with a configurable debounce timer.
+`ngIfMedia` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your application UI. Passive `resize` updates are handled automatically during the component lifetime with a configurable debounce timer.
 
 ```html
 <div *ifMedia="<tablet">I will appear below tablet width!</div>
-// (max-width: 767px)
+<!-- (max-width: 767px) -->
 
 <div *ifMedia=">=tablet and landscape">Tablets and above in landscape mode!</div>
-// (min-width: 768px) and (orientation: landscape)
+<!-- (min-width: 768px) and (orientation: landscape) -->
 
 <div *ifMedia="<=tablet, landscape">Tablets and below OR landscape mode!</div>
-// (max-width: 768px), (orientation: landscape)
+<!-- (max-width: 768px), (orientation: landscape) -->
 
 <div *ifMedia="print">You will see this on paper IRL.</div>
-// @media print
+<!-- (only) print -->
 ```
 
 ## Directive
@@ -84,11 +80,11 @@ When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showi
     <p>of a man with many devices.</p>
     <audioPlayer play="runningman">
   </li>
-  <li *ifMedia="<=tablet and >mobile">
+  <li *ifMedia="<=tablet and >phone">
     <h1>And his struggle...</h1>
     <p>to find the smoothest scaling experience ever...</p>
   </li>
-  <li *ifMedia="<=mobile">
+  <li *ifMedia="<=phone">
     <h1>Where every pixel...</h1>
     <p>has a standalone component.</p>
     <img src="lovecraftianhorror.jpg">
@@ -96,31 +92,77 @@ When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showi
 </ul>
 ```
 
-Just like in your good old CSS, abstractions can be combined with the `and` keyword or `,` separated and treated as independent junctions. You can also use `width` values directly or create flexible abstractions for other properties in the config.
+Just like in your good old CSS, abstractions can be combined with the `and` keyword or `,` separated and treated as independent junctions. You can also use `width` values directly or create abstractions for other properties in the config.
 
 ```html
 <span *ifMedia="<576px, >widescreen">
   I go high or I go low.
 </span>
 
-<loFiWidget *ifMedia="<=480px and landscape">
+<loFiWidget *ifMedia="<=budgetHeight and landscape">
   I exist to create a great customer experience for the glorious "landscape" of budget phone users!
 </loFiWidget>
 ```
 
 ## Service
 
-Sometimes you need more than showing and hiding some HTML in useful ways. `ngIfMedia` is also available as a service to simplify working with [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API using the same methodology and configuration as the directive. The callback function is only called once per logical change of the breakpoint result (not with every resize update), allowing some advanced usage.
+Sometimes you need more than showing and hiding some HTML in useful ways. `ngIfMedia` is also available as a service to simplify working with [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API using the same methodology and configuration as the directive.
 
-```html
-<h1>Spin to win!</h1>
-<strong>x{{orientationFlipCounter}}!</strong>
+```jsx
+<a routerLink="/register">{{ message }}</a>
+
+const messageSmall = 'Tap to win great stuff!';
+const messageBig = 'Click here to win the greatest prizes of all time in history!';
+this.mediaService.if('<768px', (match) => { this.message = match ? messageSmall : messageBig });
 ```
 
-```ts
+The callback function is only called once per logical change of the breakpoint result (not with every resize update), allowing some advanced usage.
+
+```jsx
+<h1>Spin to win!</h1>
+<strong>x{{orientationFlipCounter}}!</strong>
+
 this.mediaService.if('landscape', () => { this.orientationFlipCounter++; });
 ```
 
 ## Configuration
 
-Coming soon...
+By default, `ngIfMedia` has no abstract configuration and you can use it freely with direct values (eg. `<=640px`). Since project designs tend to be specific and hard to generalize among the everchanging pool of devices, supplying your own custom breakpoints is the most expected usecase.
+
+You can either create smart breakpoints that utilize `<, >, =` logical operators, specify media types, append static parameters and configure `<, >` split precision:
+
+```js
+breakpoints: {
+  vga: {
+    value: '640px',
+    param: 'width',
+    media: 'screen',
+    suffix: '(aspect-ratio: 4/3)'
+  },
+  retina2: {
+    value: '2dppx',
+    param: 'resolution',
+    precision: 0.01
+  }
+```
+
+Or handle any other usecase with static string expressions (cannot use operators):
+
+```js
+breakpoints: {
+  landscape: '(orientation: landscape)',
+  iPhone5: 'screen and (min-width: 320px) and (max-width: 568px) and (-webkit-min-device-pixel-ratio: 2)'
+}
+```
+
+Presets are available for 3rd party methodologies (currently for [Bootstrap 4](https://v4-alpha.getbootstrap.com/layout/overview/#responsive-breakpoints)) and optionally extend the custom configuration. Resize update debounce timer is also configurable.
+
+```js
+breakpoints: { ... },
+vendorBreakpoints: ['bootstrap'],
+debounceTime: 16.7
+```
+
+
+-----
+Created with :muscle: in [Salsita](https://www.salsitasoft.com/)!
