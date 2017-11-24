@@ -7,7 +7,7 @@ Server rendering ([Universal](https://universal.angular.io/)) compatible.
 `npm install --save ng-if-media`
 
 ```ts
-import { ngIfMediaModule } from 'ngIfMedia';
+import { NgIfMediaModule } from 'ng-if-media';
 
 const mediaConfig = {
   breakpoints: {
@@ -33,7 +33,7 @@ const mediaConfig = {
 };
 
 @NgModule({
-  imports: [ngIfMediaModule.withConfig(mediaConfig)]
+  imports: [NgIfMediaModule.withConfig(mediaConfig)]
 })
 ```
 
@@ -109,20 +109,38 @@ Just like in your good old CSS, abstractions can be combined with the `and` keyw
 Sometimes you need more than showing and hiding some HTML in useful ways. `ngIfMedia` is also available as a service to simplify working with [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API using the same methodology and configuration as the directive.
 
 ```jsx
+import { NgIfMediaService } from 'ng-if-media';
+
+export class AppComponent implements OnInit, OnDestroy {
+  mediaContainer;
+
+  constructor(private mediaService: NgIfMediaService) {
+    this.mediaContainer = this.mediaService.register();
+  }
+
+  ngOnDestroy() {
+    this.mediaContainer.deregister();
+  }
+}
+```
+
+```jsx
 <a routerLink="/register">{{ message }}</a>
 
 const messageSmall = 'Tap to win great stuff!';
 const messageBig = 'Click here to win the greatest prizes of all time in history!';
-this.mediaService.if('<768px', (match) => { this.message = match ? messageSmall : messageBig });
+this.mediaContainer.when('<768px', (match) => { this.message = match ? messageSmall : messageBig });
 ```
 
 The callback function is only called once per logical change of the breakpoint result (not with every resize update), allowing some advanced usage.
 
 ```jsx
+// component.html
 <h1>Spin to win!</h1>
 <strong>x{{orientationFlipCounter}}!</strong>
 
-this.mediaService.if('landscape', () => { this.orientationFlipCounter++; });
+// component.ts
+this.mediaService.when('landscape', () => { this.orientationFlipCounter++; });
 ```
 
 ## Configuration
