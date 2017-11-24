@@ -4,7 +4,7 @@ import {
 import { NgIfMediaService } from './ngIfMedia.service';
 
 @Directive({
-  selector: '[ngIfMedia]'
+  selector: '[ifMedia], [ngIfMedia]'
 })
 export class NgIfMediaDirective implements OnDestroy, OnInit {
   private media: string;
