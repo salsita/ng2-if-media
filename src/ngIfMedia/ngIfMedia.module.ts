@@ -21,9 +21,25 @@ import { vendorBreakpoints } from './defaultBreakpoints';
 })
 export class NgIfMediaModule {
   static withConfig(config): ModuleWithProviders {
-    if (config.vendorBreakpoints) {
-      config.breakpoints = Object.assign(vendorBreakpoints[config.vendorBreakpoints], config.breakpoints);
+    const mergeVendorBreakpoints = (obj, name) => {
+      if (vendorBreakpoints[name]) {
+        return Object.assign(obj, vendorBreakpoints[name]);
+      } else {
+        throw new Error(`No breakpoints found for vendor '${name}'. Check your NgIfMedia import config.`);
+      }
+    };
+
+    const { breakpoints: customBreakpoints = {}, vendorBreakpoints: vendorNames = [] } = config;
+
+    if (Array.isArray(vendorNames)) {
+      config.breakpoints = vendorNames.reduce(mergeVendorBreakpoints, {});
+    } else {
+      config.breakpoints = mergeVendorBreakpoints({}, vendorNames);
     }
+
+    // Custom breakpoints should always override vendors
+    config.breakpoints = Object.assign(config.breakpoints, customBreakpoints);
+
     return {
       ngModule: this,
       providers: [

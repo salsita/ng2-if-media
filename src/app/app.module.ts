@@ -12,7 +12,7 @@ import { NgIfMediaModule } from '../ngIfMedia/ngIfMedia.module';
     BrowserModule,
     NgIfMediaModule.withConfig({
       debounceTime: 100,
-      vendorBreakpoints: 'bootstrap',
+      vendorBreakpoints: ['bootstrap'], // or a string, e.g. 'bootstrap'
       breakpoints: {
         phoneW: {
           param: 'width',
@@ -54,7 +54,8 @@ import { NgIfMediaModule } from '../ngIfMedia/ngIfMedia.module';
           suffix: '(orientation: portrait)'
         },
         landscape: '(orientation: landscape)',
-        iPhone: 'only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait)'
+        iPhone6: 'screen and (min-device-width : 375px) and (max-device-width : 667px)',
+        iPhone: 'only screen and (min-device-width : 768px) and (max-device-width : 1024px)'
       }
     })
   ],
