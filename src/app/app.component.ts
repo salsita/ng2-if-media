@@ -15,7 +15,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.mediaContainer.if('landscape', () => { this.orientationFlipCounter++; });
+    this.mediaContainer.if('landscape', (match) => this.responsiveText = match ? 'Landscape!' : 'Portrait!');
   }
 
   ngOnDestroy() {
