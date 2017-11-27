@@ -14,13 +14,13 @@ import { NgIfMediaModule } from '../ngIfMedia/ngIfMedia.module';
       throttleTime: 100,
       vendorBreakpoints: ['bootstrap'], // or a string, e.g. 'bootstrap'
       breakpoints: {
-        break1: {
+        phone: {
           param: 'width',
-          value: '860px'
+          value: '667px'
         },
-        break2: {
+        desktop: {
           param: 'width',
-          value: '640px'
+          value: '1024px'
         }
       }
     })
