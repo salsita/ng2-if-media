@@ -21,11 +21,8 @@ export class AppComponent implements OnInit, OnDestroy {
   text1: string;
   text2: string;
   text3: string;
-
-  constructor(private mediaService: NgIfMediaService) {
-    this.mediaContainer = this.mediaService.register();
-  }
-
+  responsiveText = '';
+  
   ngOnInit() {
     this.mediaContainer.if('<break1', (match) => { this.text = match ? this.mediumTitle : this.longTitle });
     this.mediaContainer.if('<break2', (match) => { this.text = match ? this.shortTitle : this.mediumTitle });

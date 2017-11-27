@@ -11,7 +11,7 @@ import { NgIfMediaModule } from '../ngIfMedia/ngIfMedia.module';
   imports: [
     BrowserModule,
     NgIfMediaModule.withConfig({
-      debounceTime: 100,
+      throttleTime: 100,
       vendorBreakpoints: ['bootstrap'], // or a string, e.g. 'bootstrap'
       breakpoints: {
         break1: {
