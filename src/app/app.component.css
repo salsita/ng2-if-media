@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Coming+Soon|Courgette');
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: 'Coming Soon', cursive;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+h1 {
+  font-family: 'Courgette', cursive;
+}

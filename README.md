@@ -7,7 +7,7 @@ Server rendering ([Universal](https://universal.angular.io/)) compatible.
 `npm install --save ng-if-media`
 
 ```ts
-import { ngIfMediaModule } from 'ngIfMedia';
+import { NgIfMediaModule } from 'ng-if-media';
 
 const mediaConfig = {
   breakpoints: {
@@ -29,17 +29,17 @@ const mediaConfig = {
     landscape: '(orientation: landscape)'
   },
   vendorBreakpoints: ['bootstrap'],  // include 3rd party namespace
-  debounceTime: 100
+  throttle: 100
 };
 
 @NgModule({
-  imports: [ngIfMediaModule.withConfig(mediaConfig)]
+  imports: [NgIfMediaModule.withConfig(mediaConfig)]
 })
 ```
 
 ## Features
 
-`ngIfMedia` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your application UI. Passive `resize` updates are handled automatically during the component lifetime with a configurable debounce timer.
+`ngIfMedia` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your application UI. Window `resize` updates are handled automatically during the component lifetime with a configurable throttle timer.
 
 ```html
 <div *ifMedia="<tablet">I will appear below tablet width!</div>
@@ -57,7 +57,7 @@ const mediaConfig = {
 
 ## Directive
 
-When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 2+ animations.
+When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 4+ animations.
 
 ```html
 <nav class="desktop-nav" *ifMedia=">mobile">
@@ -106,28 +106,76 @@ Just like in your good old CSS, abstractions can be combined with the `and` keyw
 
 ## Service
 
-Sometimes you need more than showing and hiding some HTML in useful ways. `ngIfMedia` is also available as a service to simplify working with [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API using the same methodology and configuration as the directive.
+Sometimes you need more granularity than just showing and hiding some HTML. `ngIfMedia` is also available as a service to simplify working with [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API and related window events using the same methodology and configuration as the directive.
 
 ```jsx
-<a routerLink="/register">{{ message }}</a>
+import { NgIfMediaService } from 'ng-if-media';
 
-const messageSmall = 'Tap to win great stuff!';
-const messageBig = 'Click here to win the greatest prizes of all time in history!';
-this.mediaService.if('<768px', (match) => { this.message = match ? messageSmall : messageBig });
+export class AppComponent implements OnDestroy {
+  mediaContainer;
+
+  constructor(private mediaService: NgIfMediaService) {
+    this.mediaContainer = this.mediaService.register();
+  }
+
+  ngOnDestroy() {
+    this.mediaContainer.deregister();
+  }
+}
 ```
 
-The callback function is only called once per logical change of the breakpoint result (not with every resize update), allowing some advanced usage.
+### onChange
+
+The `onChange` method provides the functional jackhammer for solving logic inside the callback, where the query result is passed as an optional parameter.
 
 ```jsx
+// component.html
+<a routerLink="/register">{{ message }}</a>
+
+// component.ts
+const messageSmall = 'Tap to win great stuff!';
+const messageBig = 'Click here to win the greatest prizes of all time in history!';
+this.mediaContainer.onChange('<768px', (match) => { this.message = match ? messageSmall : messageBig });
+```
+
+The callback function is executed once for every time the media expression result is flipped, allowing some advanced usage.
+
+```jsx
+// component.html
 <h1>Spin to win!</h1>
 <strong>x{{orientationFlipCounter}}!</strong>
 
-this.mediaService.if('landscape', () => { this.orientationFlipCounter++; });
+// component.ts
+this.mediaService.onChange('landscape', () => { this.orientationFlipCounter++; });
+```
+
+### when
+
+Unlike `onChange`, the `when` method executes its callback only once for every time the media expression evaluates to `true`.
+
+```jsx
+this.mediaService.when('landscape', () => {
+  alert('Switching back to portrait is $2.24 monthly. - Comcast');
+})
+```
+
+To make things simpler for practical uses, you can provide an object of properties to change in the current component `this` context instead.
+
+```jsx
+// component.html
+<p>{{text}}</p>
+
+// component.ts
+this.mediaService.when({
+  '<=phone': { 'text': 'Text for phones' },
+  '>phone and <desktop': { 'text': 'Longer text for some other devices' },
+  '>=desktop': { 'text': 'Funny viral message in 4K vibrating through the screen' }
+})
 ```
 
 ## Configuration
 
-By default, `ngIfMedia` has no abstract configuration and you can use it freely with direct values (eg. `<=640px`). Since project designs tend to be specific and hard to generalize among the everchanging pool of devices, supplying your own custom breakpoints is the most expected usecase.
+By default, `ngIfMedia` has no abstract configuration and you can use it freely with direct values (eg. `<=640px`). Since project designs tend to be specific and hard to generalize, supplying your own custom breakpoints is the most expected usecase.
 
 You can either create smart breakpoints that utilize `<, >, =` logical operators, specify media types, append static parameters and configure `<, >` split precision:
 
@@ -155,12 +203,12 @@ breakpoints: {
 }
 ```
 
-Presets are available for 3rd party methodologies (currently for [Bootstrap 4](https://v4-alpha.getbootstrap.com/layout/overview/#responsive-breakpoints)) and optionally extend the custom configuration. Resize update debounce timer is also configurable.
+Presets are available for 3rd party methodologies (currently for [Bootstrap 4](https://v4-alpha.getbootstrap.com/layout/overview/#responsive-breakpoints)) and optionally extend the custom configuration. Resize update throttle timer is also configurable.
 
 ```js
 breakpoints: { ... },
 vendorBreakpoints: ['bootstrap'],
-debounceTime: 16.7
+throttle: 16.7
 ```
 
 
