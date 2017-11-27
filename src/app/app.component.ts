@@ -8,18 +8,14 @@ import { NgIfMediaService } from '../ngIfMedia/ngIfMedia.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   mediaContainer;
-  responsiveText = 'WTF';
-  anotherResponsiveText;
-  orientationFlipCounter = -1;
+  responsiveText = '';
 
   constructor(private mediaService: NgIfMediaService) {
     this.mediaContainer = this.mediaService.register();
   }
 
   ngOnInit() {
-    this.mediaContainer.if('iPhone6 and landscape', () => { this.orientationFlipCounter++; });
-    this.mediaContainer.if('<tablet', (match) => { this.responsiveText = match ? '< TABLET' : '> TABLET'; });
-    this.mediaContainer.if('phoneH', (match) => { this.anotherResponsiveText = match ? '= phoneH' : '!= phoneH'; });
+    this.mediaContainer.if('landscape', () => { this.orientationFlipCounter++; });
   }
 
   ngOnDestroy() {

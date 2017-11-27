@@ -1,4 +1,4 @@
 export const defaultConfig = {
-  debounceTime: 100,
+  throttleTime: 100,
   breakpoints: {}
 };

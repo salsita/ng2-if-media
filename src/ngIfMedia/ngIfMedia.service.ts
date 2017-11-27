@@ -22,13 +22,14 @@ class ReflectionContainer {
 export class NgIfMediaService {
   elements = new Map();
   reflections = new Map();
-  debounceTime = 100;
-  inDebounce = false;
-  notificationTimeout;
+  throttleTime = 100;
+  isThrottling = false;
+  resized = false;
+  notifyTimeout;
   parser;
 
   constructor(@Inject(CONFIG) config) {
-    this.debounceTime = config.debounceTime;
+    this.throttleTime = config.throttleTime;
     this.parser = new QueryParser(config.breakpoints);
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', this.onResize.bind(this));
@@ -48,17 +49,33 @@ export class NgIfMediaService {
     return window.matchMedia(mediaQuery).matches;
   }
 
-  private onResize() {
-    if (this.inDebounce) {
-      clearTimeout(this.notificationTimeout);
+  private sendNotifications() {
+    this.notifyReflections();
+    this.notifyElements();
+  }
+
+  private throttledNotify() {
+    if (this.resized) {
+      this.sendNotifications();
+
+      this.notifyTimeout = setTimeout(() => {
+        this.throttledNotify();
+      }, this.throttleTime);
+    } else {
+      clearTimeout(this.notifyTimeout);
+      this.isThrottling = false;
     }
 
-    this.inDebounce = true;
-    this.notificationTimeout = setTimeout(() => {
-      this.notifyReflections();
-      this.notifyElements();
-      this.inDebounce = false;
-    }, this.debounceTime);
+    this.resized = false;
+  }
+
+  private onResize() {
+    this.resized = true;
+    if (!this.isThrottling) {
+      this.sendNotifications();
+      this.isThrottling = true;
+      setTimeout(() => this.throttledNotify(), this.throttleTime);
+    }
   }
 
   public addReflection(container, query, matchFn) {
