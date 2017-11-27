@@ -92,7 +92,7 @@ When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showi
 </ul>
 ```
 
-Just like in your alt schüle CSS, abstractions can be combined with the `and` keyword or comma separated and treated as independent junctions. You can also use `width` values directly or create breakpoints for other properties in the config.
+Following CSS, abstractions can be combined with the `and` keyword or comma separated and treated as independent junctions. You can also use `width` values directly or create breakpoints for other properties in the config.
 
 ```html
 <span *ifMedia="<576px, >widescreen">
