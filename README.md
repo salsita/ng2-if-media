@@ -29,7 +29,7 @@ const mediaConfig = {
     landscape: '(orientation: landscape)'
   },
   vendorBreakpoints: ['bootstrap'],  // include 3rd party namespace
-  debounceTime: 100
+  throttle: 100
 };
 
 @NgModule({
@@ -39,7 +39,7 @@ const mediaConfig = {
 
 ## Features
 
-`ngIfMedia` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your application UI. Passive `resize` updates are handled automatically during the component lifetime with a configurable debounce timer.
+`ngIfMedia` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your application UI. Window `resize` updates are handled automatically during the component lifetime with a configurable throttle timer.
 
 ```html
 <div *ifMedia="<tablet">I will appear below tablet width!</div>
@@ -57,7 +57,7 @@ const mediaConfig = {
 
 ## Directive
 
-When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 2+ animations.
+When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 4+ animations.
 
 ```html
 <nav class="desktop-nav" *ifMedia=">mobile">
@@ -106,12 +106,12 @@ Just like in your good old CSS, abstractions can be combined with the `and` keyw
 
 ## Service
 
-Sometimes you need more than showing and hiding some HTML in useful ways. `ngIfMedia` is also available as a service to simplify working with [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API using the same methodology and configuration as the directive.
+Sometimes you need more granularity than just showing and hiding some HTML. `ngIfMedia` is also available as a service to simplify working with [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API and related window events using the same methodology and configuration as the directive.
 
 ```jsx
 import { NgIfMediaService } from 'ng-if-media';
 
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnDestroy {
   mediaContainer;
 
   constructor(private mediaService: NgIfMediaService) {
@@ -124,7 +124,9 @@ export class AppComponent implements OnInit, OnDestroy {
 }
 ```
 
-The `.match` method exposes a parameter in the callback function, allowing complex disjunctions.
+### onChange
+
+The `onChange` method provides the functional jackhammer for solving logic inside the callback, where the query result is passed as an optional parameter.
 
 ```jsx
 // component.html
@@ -133,10 +135,10 @@ The `.match` method exposes a parameter in the callback function, allowing compl
 // component.ts
 const messageSmall = 'Tap to win great stuff!';
 const messageBig = 'Click here to win the greatest prizes of all time in history!';
-this.mediaContainer.match('<768px', (match) => { this.message = match ? messageSmall : messageBig });
+this.mediaContainer.onChange('<768px', (match) => { this.message = match ? messageSmall : messageBig });
 ```
 
-Alternatively using the `.when()` medhod, the callback function is only called once when the breakpoint changes to true (not with every resize update), allowing some advanced usage.
+The callback function is executed once for every time the media expression result is flipped, allowing some advanced usage.
 
 ```jsx
 // component.html
@@ -144,7 +146,31 @@ Alternatively using the `.when()` medhod, the callback function is only called o
 <strong>x{{orientationFlipCounter}}!</strong>
 
 // component.ts
-this.mediaService.when('landscape', () => { this.orientationFlipCounter++; });
+this.mediaService.onChange('landscape', () => { this.orientationFlipCounter++; });
+```
+
+### when
+
+Unlike `onChange`, the `when` method executes its callback only once for every time the media expression evaluates to `true`.
+
+```jsx
+this.mediaService.when('landscape', () => {
+  alert('Switching back to portrait is $2.24 monthly. - Comcast');
+})
+```
+
+To make things simpler for practical uses, you can provide an object of properties to change in the current component `this` context instead.
+
+```jsx
+// component.html
+<p>{{text}}</p>
+
+// component.ts
+this.mediaService.when({
+  '<=phone': { 'text': 'Text for phones' },
+  '>phone and <desktop': { 'text': 'Longer text for some other devices' },
+  '>=desktop': { 'text': 'Funny viral message in 4K vibrating through the screen' }
+})
 ```
 
 ## Configuration
@@ -177,12 +203,12 @@ breakpoints: {
 }
 ```
 
-Presets are available for 3rd party methodologies (currently for [Bootstrap 4](https://v4-alpha.getbootstrap.com/layout/overview/#responsive-breakpoints)) and optionally extend the custom configuration. Resize update debounce timer is also configurable.
+Presets are available for 3rd party methodologies (currently for [Bootstrap 4](https://v4-alpha.getbootstrap.com/layout/overview/#responsive-breakpoints)) and optionally extend the custom configuration. Resize update throttle timer is also configurable.
 
 ```js
 breakpoints: { ... },
 vendorBreakpoints: ['bootstrap'],
-debounceTime: 16.7
+throttle: 16.7
 ```
 
 
