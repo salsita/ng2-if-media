@@ -124,15 +124,19 @@ export class AppComponent implements OnInit, OnDestroy {
 }
 ```
 
+The `.match` method exposes a parameter in the callback function, allowing complex disjunctions.
+
 ```jsx
+// component.html
 <a routerLink="/register">{{ message }}</a>
 
+// component.ts
 const messageSmall = 'Tap to win great stuff!';
 const messageBig = 'Click here to win the greatest prizes of all time in history!';
-this.mediaContainer.when('<768px', (match) => { this.message = match ? messageSmall : messageBig });
+this.mediaContainer.match('<768px', (match) => { this.message = match ? messageSmall : messageBig });
 ```
 
-The callback function is only called once per logical change of the breakpoint result (not with every resize update), allowing some advanced usage.
+Alternatively using the `.when()` medhod, the callback function is only called once when the breakpoint changes to true (not with every resize update), allowing some advanced usage.
 
 ```jsx
 // component.html
@@ -145,7 +149,7 @@ this.mediaService.when('landscape', () => { this.orientationFlipCounter++; });
 
 ## Configuration
 
-By default, `ngIfMedia` has no abstract configuration and you can use it freely with direct values (eg. `<=640px`). Since project designs tend to be specific and hard to generalize among the everchanging pool of devices, supplying your own custom breakpoints is the most expected usecase.
+By default, `ngIfMedia` has no abstract configuration and you can use it freely with direct values (eg. `<=640px`). Since project designs tend to be specific and hard to generalize, supplying your own custom breakpoints is the most expected usecase.
 
 You can either create smart breakpoints that utilize `<, >, =` logical operators, specify media types, append static parameters and configure `<, >` split precision:
 
