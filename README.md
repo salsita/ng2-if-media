@@ -92,7 +92,7 @@ When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showi
 </ul>
 ```
 
-Just like in your good old CSS, abstractions can be combined with the `and` keyword or `,` separated and treated as independent junctions. You can also use `width` values directly or create abstractions for other properties in the config.
+Following CSS, abstractions can be combined with the `and` keyword or comma separated and treated as independent junctions. You can also use `width` values directly or create breakpoints for other properties in the config.
 
 ```html
 <span *ifMedia="<576px, >widescreen">
@@ -126,7 +126,7 @@ export class AppComponent implements OnDestroy {
 
 ### onChange
 
-The `onChange` method provides the functional jackhammer for solving logic inside the callback, where the query result is passed as an optional parameter.
+The `onChange` method provides the functional jackhammer for media specific application logic, where the media expression result is passed to the callback as an optional parameter.
 
 ```jsx
 // component.html
@@ -138,7 +138,7 @@ const messageBig = 'Click here to win the greatest prizes of all time in history
 this.mediaContainer.onChange('<768px', (match) => { this.message = match ? messageSmall : messageBig });
 ```
 
-The callback function is executed once for every time the media expression result is flipped, allowing some advanced usage.
+The callback is executed once for every time the media expression result is flipped, allowing some advanced usage.
 
 ```jsx
 // component.html
@@ -146,38 +146,39 @@ The callback function is executed once for every time the media expression resul
 <strong>x{{orientationFlipCounter}}!</strong>
 
 // component.ts
-this.mediaService.onChange('landscape', () => { this.orientationFlipCounter++; });
+this.mediaContainer.onChange('landscape', () => { this.orientationFlipCounter++; });
 ```
 
 ### when
 
-Unlike `onChange`, the `when` method executes its callback only once for every time the media expression evaluates to `true`.
+`when` method executes its callback only once for every time the media expression evaluates to `true`.
 
 ```jsx
-this.mediaService.when('landscape', () => {
+this.mediaContainer.when('landscape', () => {
   alert('Switching back to portrait is $2.24 monthly. - Comcast');
 })
 ```
 
-To make things simpler for practical uses, you can provide an object of properties to change in the current component `this` context instead.
+To make things practically simple, you can pass an object of properties to change in the current component `this` context instead.
 
 ```jsx
 // component.html
 <p>{{text}}</p>
 
 // component.ts
-this.mediaService.when({
+text: string = 'Default message';
+this.mediaContainer.when({
   '<=phone': { 'text': 'Text for phones' },
   '>phone and <desktop': { 'text': 'Longer text for some other devices' },
-  '>=desktop': { 'text': 'Funny viral message in 4K vibrating through the screen' }
+  '>=desktop': { 'text': 'Funny retro-viral message for Wizards in 8bit|4K' }
 })
 ```
 
 ## Configuration
 
-By default, `ngIfMedia` has no abstract configuration and you can use it freely with direct values (eg. `<=640px`). Since project designs tend to be specific and hard to generalize, supplying your own custom breakpoints is the most expected usecase.
+By default, `ngIfMedia` has no abstract configuration and you can use it freely with direct values (eg. `<=640px`) or 3rd party presets. Since project requirements can get very specific, supplying your own custom breakpoints is the most expected usecase.
 
-You can either create smart breakpoints that utilize `<, >, =` logical operators, specify media types, append static parameters and configure `<, >` split precision:
+You can either create flexible breakpoints that utilize `<, >, =` logical operators (with precision), specify media types and append static suffixes:
 
 ```js
 breakpoints: {
@@ -194,7 +195,7 @@ breakpoints: {
   }
 ```
 
-Or handle any other usecase with static string expressions (cannot use operators):
+Or handle any other usecase with static string expressions (which cannot use operators):
 
 ```js
 breakpoints: {
@@ -203,7 +204,7 @@ breakpoints: {
 }
 ```
 
-Presets are available for 3rd party methodologies (currently for [Bootstrap 4](https://v4-alpha.getbootstrap.com/layout/overview/#responsive-breakpoints)) and optionally extend the custom configuration. Resize update throttle timer is also configurable.
+Presets are available for 3rd party methodologies (currently for [Bootstrap 4](https://v4-alpha.getbootstrap.com/layout/overview/#responsive-breakpoints)) and optionally extend the custom configuration. Resize update throttle timer is also configurable (default `100`).
 
 ```js
 breakpoints: { ... },

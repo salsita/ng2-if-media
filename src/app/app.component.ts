@@ -8,35 +8,29 @@ import { NgIfMediaService } from '../ngIfMedia/ngIfMedia.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   mediaContainer;
-  short1 = 'Short';
-  medium1 = 'Medium Title';
-  long1 = 'Long Navigation Title';
-  short2 = 'Short';
-  medium2 = 'Medium Title';
-  long2 = 'Long Navigation Title';
-  short3 = 'Short';
-  medium3 = 'Medium Title';
-  long3 = 'Long Navigation Title';
+  short1 = 'Short 1';
+  medium1 = 'Medium Title 1';
+  long1 = 'Long Navigation Title 1';
+  short2 = 'Short 2';
+  medium2 = 'Medium Title 2';
+  long2 = 'Long Navigation Title 2';
+  short3 = 'Short 3';
+  medium3 = 'Medium Title 3';
+  long3 = 'Long Navigation Title 3';
 
   text1: string;
   text2: string;
   text3: string;
-  responsiveText = '';
-  
+
+  constructor(private mediaService: NgIfMediaService) {
+    this.mediaContainer = this.mediaService.register();
+  }
+
   ngOnInit() {
-    this.mediaContainer.if('<break1', (match) => { this.text = match ? this.mediumTitle : this.longTitle });
-    this.mediaContainer.if('<break2', (match) => { this.text = match ? this.shortTitle : this.mediumTitle });
-
     this.mediaContainer.when({
-      '<=phone': () => this.text = this.shortTitle,
-      '<desktop and >phone': () => this.text = this.mediumTitle,
-      '>=desktop': () => this.text = this.longTitle
-    });
-
-    this.mediaContainer.when({
-      '<=phone': { 'text': this.shortTitle },
-      '<desktop and >phone': () => this.text = this.mediumTitle,
-      '>=desktop': () => this.text = this.longTitle
+      '<=phone': { 'text1': this.short1, 'text2': this.medium1, 'text3': this.long1 },
+      '<desktop and >phone': { 'text1': this.short2, 'text2': this.medium2, 'text3': this.long2 },
+      '>=desktop': { 'text1': this.short3, 'text2': this.medium3, 'text3': this.long3 }
     });
   }
 
