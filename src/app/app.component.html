@@ -1,7 +1,19 @@
 <header>
-  <ul>
-    <li>{{text1}}</li>
-    <li>{{text2}}</li>
-    <li>{{text3}}</li>
-  </ul>
+  <span>{{menu1}}</span>
 </header>
+
+<main>
+  <div class="background"></div>
+  <h1 *ngIfMedia="'<=phone, >=desktop'">{{menu2}}</h1>
+  <input type="text" placeholder="Enter your email" *ngIfMedia="'<phone'">
+  <ul class="lappie" *ngIfMedia="'>phone and <desktop'">
+    <li>
+      <span>1. Enter email</span>
+      <input type="text" placeholder="Your real email">
+    </li>
+    <li>
+      <span>2. Tap button</span>
+      <button>OKAY</button>
+    </li>
+  </ul>
+</main>

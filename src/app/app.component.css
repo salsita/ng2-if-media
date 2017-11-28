@@ -1,17 +1,120 @@
-@import url('https://fonts.googleapis.com/css?family=Coming+Soon|Courgette');
-
-ul {
-  list-style: none;
-  margin: 0;
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
   padding: 0 20px;
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  font-family: 'Coming Soon', cursive;
-  font-size: 22px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  background: beige;
+  font-size: 24px;
   font-weight: bold;
+  z-index: 1;
+}
+
+input {
+  font: inherit;
+  line-height: 42px;
+  border: 1px solid black;
+  padding: 0 15px;
+}
+
+main {
+  position: relative;
+  padding-top: 60px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+main > * {
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+main > *:last-child {
+  margin-bottom: 0;
+}
+
+.background {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: #3ab54a url(http://allswalls.com/images/minimalist-wallpaper-6.jpg) no-repeat left calc(50% + 200px) top -220px / auto 660px;
+  opacity: 0;
+  transition: all 300ms ease-in-out;
+  z-index: -1;
+  transform: translateY(60px);
 }
 
 h1 {
-  font-family: 'Courgette', cursive;
+  transition: all 300ms ease-in-out;
+}
+
+.lappie {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.lappie li {
+  width: 50%;
+  background-color: #353256;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.lappie li span {
+  margin-bottom: 20px;
+}
+
+.lappie li:last-child {
+  background-color: #282544;
+}
+
+.lappie li input {
+  font-size: 20px;
+  max-width: 80%;
+}
+
+.lappie li:last-child button {
+  font: inherit;
+  appearance: none;
+  border: none;
+  line-height: 40px;
+  padding: 0 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  color: #282544;
+  font-size: 20px;
+}
+
+@media (min-width: 700px) {
+
+  h1 {
+    color: white;
+    margin-right: 160px !important;
+  }
+
+  .background {
+    opacity: 0.8;
+    transform: translateY(40px);
+  }
 }

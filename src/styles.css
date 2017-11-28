@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed');
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+}
+
+app-root {
+  display: block;
+  height: 100%;
+}
+
+main {
+  transition: all 300ms ease-in-out;
+}
+
+@media (max-width: 400px) {
+  h1 {
+    color: white;
+  }
+
+  main {
+    background: red;
+    color: white;
+  }
+}

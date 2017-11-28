@@ -8,30 +8,42 @@ import { NgIfMediaService } from '../ngIfMedia/ngIfMedia.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   mediaContainer;
-  short1 = 'Short 1';
-  medium1 = 'Medium Title 1';
-  long1 = 'Long Navigation Title 1';
-  short2 = 'Short 2';
-  medium2 = 'Medium Title 2';
-  long2 = 'Long Navigation Title 2';
-  short3 = 'Short 3';
-  medium3 = 'Medium Title 3';
-  long3 = 'Long Navigation Title 3';
+  menu1short = '<=phone';
+  menu1medium = '>phone and <desktop';
+  menu1long = '>=desktop';
+  menu2short = 'Contact';
+  menu2medium = 'Get a quote';
+  menu2long = 'Get in touch from your desktop!';
 
-  text1: string;
-  text2: string;
-  text3: string;
+  menu1: string;
+  menu2: string;
 
   constructor(private mediaService: NgIfMediaService) {
     this.mediaContainer = this.mediaService.register();
   }
 
   ngOnInit() {
-    this.mediaContainer.when({
-      '<=phone': { 'text1': this.short1, 'text2': this.medium1, 'text3': this.long1 },
-      '<desktop and >phone': { 'text1': this.short2, 'text2': this.medium2, 'text3': this.long2 },
-      '>=desktop': { 'text1': this.short3, 'text2': this.medium3, 'text3': this.long3 }
+    this.mediaContainer.if('<=phone', (match) => {
+      if (match) {
+        this.menu1 = this.menu1short;
+        this.menu2 = this.menu2short;
+      }
     });
+
+    this.mediaContainer.if('>phone and <desktop', (match) => {
+      if (match) {
+        this.menu1 = this.menu1medium;
+        this.menu2 = this.menu2medium;
+      }
+    });
+
+    this.mediaContainer.if('>=desktop', (match) => {
+      if (match) {
+        this.menu1 = this.menu1long;
+        this.menu2 = this.menu2long;
+      }
+    });
+
   }
 
   ngOnDestroy() {

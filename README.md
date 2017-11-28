@@ -4,6 +4,10 @@ A flexible directive/service module for handling media types and queries in Angu
   
 Server rendering ([Universal](https://universal.angular.io/)) compatible.
 
+![ngIfMedia](demo/ng-if-media.gif)
+
+## Installation
+
 `npm install --save ng-if-media`
 
 ```ts
