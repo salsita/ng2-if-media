@@ -43,7 +43,7 @@ const mediaConfig = {
 
 ## Features
 
-`ngIfMedia` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your application UI. Window `resize` updates are handled automatically during the component lifetime with a configurable throttle timer.
+`ngIfMedia` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your responsive web-application UI. Window `resize` updates are handled automatically during the component lifetime with a configurable throttle timer.
 
 ```html
 <div *ifMedia="<tablet">I will appear below tablet width!</div>
