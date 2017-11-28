@@ -61,7 +61,7 @@ const mediaConfig = {
 
 ## Directive
 
-When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 4+ animations.
+When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 4+ animation engine.
 
 ```html
 <nav class="desktop-nav" *ifMedia=">mobile">
