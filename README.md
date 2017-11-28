@@ -210,6 +210,8 @@ breakpoints: {
 
 Presets are available for 3rd party methodologies (currently for [Bootstrap 4](https://v4-alpha.getbootstrap.com/layout/overview/#responsive-breakpoints)) and optionally extend the custom configuration. Resize update throttle timer is also configurable (default `100`).
 
+Note: Bootstrap methodology is incompatible with logical operators, due to `xs` and `sm` being the same 576px breakpoint with opposite orientation. The namespace is only available as static expressions, just like in Bootstrap itself. 
+
 ```js
 breakpoints: { ... },
 vendorBreakpoints: ['bootstrap'],
