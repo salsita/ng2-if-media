@@ -119,7 +119,7 @@ export class AppComponent implements OnDestroy {
   mediaContainer;
 
   constructor(private mediaService: NgIfMediaService) {
-    this.mediaContainer = this.mediaService.register();
+    this.mediaContainer = this.mediaService.register(this);
   }
 
   ngOnDestroy() {
