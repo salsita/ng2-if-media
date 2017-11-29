@@ -4,6 +4,10 @@ A flexible directive/service module for handling media types and queries in Angu
   
 Server rendering ([Universal](https://universal.angular.io/)) compatible.
 
+![ngIfMedia](demo/ng-if-media.gif)
+
+## Installation
+
 `npm install --save ng-if-media`
 
 ```ts
@@ -39,7 +43,7 @@ const mediaConfig = {
 
 ## Features
 
-`ngIfMedia` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your application UI. Window `resize` updates are handled automatically during the component lifetime with a configurable throttle timer.
+`ngIfMedia` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your responsive web-application UI. Window `resize` updates are handled automatically during the component lifetime with a configurable throttle timer.
 
 ```html
 <div *ifMedia="<tablet">I will appear below tablet width!</div>
@@ -57,7 +61,7 @@ const mediaConfig = {
 
 ## Directive
 
-When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 4+ animations.
+When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 4+ animation engine.
 
 ```html
 <nav class="desktop-nav" *ifMedia=">mobile">
@@ -204,7 +208,11 @@ breakpoints: {
 }
 ```
 
+### Presets
+
 Presets are available for 3rd party methodologies (currently for [Bootstrap 4](https://v4-alpha.getbootstrap.com/layout/overview/#responsive-breakpoints)) and optionally extend the custom configuration. Resize update throttle timer is also configurable (default `100`).
+
+Note: Bootstrap methodology is incompatible with logical operators, due to `xs` and `sm` being the same 576px breakpoint with opposite orientation. The namespace is only available as static expressions, just like in Bootstrap itself. 
 
 ```js
 breakpoints: { ... },

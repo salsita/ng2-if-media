@@ -16,11 +16,11 @@ import { NgIfMediaModule } from '../ngIfMedia/ngIfMedia.module';
       breakpoints: {
         phone: {
           param: 'width',
-          value: '667px'
+          value: '400px'
         },
         desktop: {
           param: 'width',
-          value: '1024px'
+          value: '700px'
         }
       }
     })
