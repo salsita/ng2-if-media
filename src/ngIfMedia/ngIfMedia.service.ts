@@ -3,16 +3,38 @@ import { CONFIG } from './ngIfMedia.config';
 import { QueryParser } from './queryParser';
 
 class ReflectionContainer {
-  constructor(private service: NgIfMediaService, private component) {
-    this.service = service;
-  }
+  constructor(public service: NgIfMediaService, public component) {}
 
   public when(query, matchFn) {
-    this.service.addReflection(this, query, (match) => match && matchFn());
+    if (typeof query === 'string') {
+      this.singleReflection(query, matchFn, true);
+    } else if (typeof query === 'object') {
+      this.objectReflection(query, true);
+    } else {
+      throw new Error('Unsupported breakpoint parameter, please use a string or an object with breakpoints as keys.');
+    }
   }
 
   public onChange(query, matchFn) {
-    this.service.addReflection(this, query, matchFn);
+    if (typeof query === 'string') {
+      this.singleReflection(query, matchFn);
+    } else if (typeof query === 'object') {
+      this.objectReflection(query);
+    } else {
+      throw new Error('Unsupported breakpoint parameter, please use a string or an object with breakpoints as keys.');
+    }
+  }
+
+  private objectReflection(queryObj, onlyWhenMatched = false) {
+    this.service.addObjectReflection(this, queryObj, onlyWhenMatched);
+  }
+
+  private singleReflection(query, matchLogic, onlyWhenMatched = false) {
+    if (typeof matchLogic === 'function') {
+      this.service.addSingleReflection(this, { query, matchFn: matchLogic, onlyWhenMatched });
+    } else if (typeof matchLogic === 'object') {
+      this.service.addSingleReflection(this, { query, newState: matchLogic, onlyWhenMatched });
+    }
   }
 
   public deregister() {
@@ -52,7 +74,7 @@ export class NgIfMediaService {
   }
 
   private sendNotifications() {
-    this.notifyReflections();
+    this.resolveReflections();
     this.notifyElements();
   }
 
@@ -80,26 +102,69 @@ export class NgIfMediaService {
     }
   }
 
-  public addReflection(container, query, matchFn) {
+  public addSingleReflection(container, { query, matchFn = null, onlyWhenMatched = false, newState = null }) {
     const arr = this.reflections.get(container) || [];
     const matches = this.isMedia(query);
-    this.reflections.set(container, arr.concat({query, matchFn, matches}));
-    matchFn(matches);
+    this.reflections.set(container, arr.concat({query, matchFn, matches, onlyWhenMatched, newState}));
+
+    const firstLoad = !onlyWhenMatched || matches;
+    if (typeof matchFn === 'function' && firstLoad) {
+      matchFn(matches);
+    }
+    if (newState && firstLoad) {
+      this.mergeStateMirror(container.component, newState);
+    }
+  }
+
+  public addObjectReflection(container, queryObj, onlyWhenMatched = false) {
+    for (const query of Object.keys(queryObj)) {
+      const matchLogic = queryObj[query];
+      if (typeof matchLogic === 'function') {
+        this.addSingleReflection(container, { query, matchFn: matchLogic, onlyWhenMatched } );
+      } else if (typeof matchLogic === 'object') {
+        this.addSingleReflection(container, { query, newState: matchLogic, onlyWhenMatched });
+      }
+    }
+  }
+
+  private mergeStateMirror(component, newState) {
+    for (const property of Object.keys(newState)) {
+      component[property] = newState[property];
+    }
   }
 
   public removeReflection(container) {
     this.reflections.delete(container);
   }
 
-  private notifyReflections() {
+  private resolveReflections() {
     this.reflections.forEach((val, container) => {
       const newVal = [];
-      for (const { query, matchFn, matches } of val) {
+
+      for (const { query, matchFn, matches: oldMatch, onlyWhenMatched, newState } of val) {
         const newMatch = this.isMedia(query);
-        if (matches !== newMatch) {
-          matchFn(newMatch);
+        // Don't do anything if the flag didn't change
+        if (newMatch === oldMatch) {
+          newVal.push({ query, matchFn, matches: newMatch, onlyWhenMatched, newState });
+          continue;
         }
-        newVal.push({query, matchFn, matches: newMatch});
+
+        let resolve = false;
+        if (onlyWhenMatched && !oldMatch) {
+          resolve = true;
+        } else if (!onlyWhenMatched) {
+          resolve = true;
+        }
+
+        if (resolve) {
+          if (matchFn) {
+            matchFn();
+          } else if (newState) {
+            this.mergeStateMirror(container.component, newState);
+          }
+        }
+
+        newVal.push({ query, matchFn, matches: newMatch, onlyWhenMatched, newState });
       }
 
       this.reflections.set(container, newVal);

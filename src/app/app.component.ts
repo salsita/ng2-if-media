@@ -14,6 +14,7 @@ export class AppComponent implements OnInit, OnDestroy {
   menu2short = 'Contact';
   menu2medium = 'Get a quote';
   menu2long = 'Get in touch from your desktop!';
+  orientationFlipCounter = -1;
 
   menu1: string;
   menu2: string;
@@ -23,21 +24,25 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.mediaContainer.when('<=phone', () => {
-        this.menu1 = this.menu1short;
-        this.menu2 = this.menu2short;
-    });
-
-    this.mediaContainer.when('>phone and <desktop', () => {
-        this.menu1 = this.menu1medium;
-        this.menu2 = this.menu2medium;
-    });
-
-    this.mediaContainer.when('>=desktop', () => {
+    this.mediaContainer.when({
+      '<=phone': {
+        menu1: this.menu1short,
+        menu2: this.menu2short
+      },
+      '>phone and <desktop': {
+        menu1: this.menu1medium,
+        menu2: this.menu2medium
+      },
+      '>=desktop': () => {
         this.menu1 = this.menu1long;
         this.menu2 = this.menu2long;
+      }
     });
 
+    // Same as this.mediaContainer.onChange('(orientation: landscape)', { this.orientationFlipCounter++; });
+    this.mediaContainer.onChange({
+      '(orientation: landscape)': () => { this.orientationFlipCounter++; }
+    });
   }
 
   ngOnDestroy() {
