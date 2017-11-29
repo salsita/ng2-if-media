@@ -19,29 +19,23 @@ export class AppComponent implements OnInit, OnDestroy {
   menu2: string;
 
   constructor(private mediaService: NgIfMediaService) {
-    this.mediaContainer = this.mediaService.register();
+    this.mediaContainer = this.mediaService.register(this);
   }
 
   ngOnInit() {
-    this.mediaContainer.if('<=phone', (match) => {
-      if (match) {
+    this.mediaContainer.when('<=phone', () => {
         this.menu1 = this.menu1short;
         this.menu2 = this.menu2short;
-      }
     });
 
-    this.mediaContainer.if('>phone and <desktop', (match) => {
-      if (match) {
+    this.mediaContainer.when('>phone and <desktop', () => {
         this.menu1 = this.menu1medium;
         this.menu2 = this.menu2medium;
-      }
     });
 
-    this.mediaContainer.if('>=desktop', (match) => {
-      if (match) {
+    this.mediaContainer.when('>=desktop', () => {
         this.menu1 = this.menu1long;
         this.menu2 = this.menu2long;
-      }
     });
 
   }

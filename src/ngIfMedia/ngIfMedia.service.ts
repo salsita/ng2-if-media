@@ -3,13 +3,15 @@ import { CONFIG } from './ngIfMedia.config';
 import { QueryParser } from './queryParser';
 
 class ReflectionContainer {
-  private service: NgIfMediaService;
-
-  constructor(service: NgIfMediaService) {
+  constructor(private service: NgIfMediaService, private component) {
     this.service = service;
   }
 
-  public if(query, matchFn) {
+  public when(query, matchFn) {
+    this.service.addReflection(this, query, (match) => match && matchFn());
+  }
+
+  public onChange(query, matchFn) {
     this.service.addReflection(this, query, matchFn);
   }
 
@@ -36,8 +38,8 @@ export class NgIfMediaService {
     }
   }
 
-  public register() {
-    return new ReflectionContainer(this);
+  public register(component) {
+    return new ReflectionContainer(this, component);
   }
 
   public isMedia(query): boolean {
