@@ -6,20 +6,18 @@ class ReflectionContainer {
   constructor(public service: NgIfMediaService, public component) {}
 
   public when(query, matchFn) {
-    if (typeof query === 'string') {
-      this.singleReflection(query, matchFn, true);
-    } else if (typeof query === 'object') {
-      this.objectReflection(query, true);
-    } else {
-      throw new Error('Unsupported breakpoint parameter, please use a string or an object with breakpoints as keys.');
-    }
+    this.createReflection(query, matchFn, true);
   }
 
   public onChange(query, matchFn) {
+    this.createReflection(query, matchFn, false);
+  }
+
+  private createReflection(query, matchFn, onlyWhenMatched) {
     if (typeof query === 'string') {
-      this.singleReflection(query, matchFn);
+      this.singleReflection(query, matchFn, onlyWhenMatched);
     } else if (typeof query === 'object') {
-      this.objectReflection(query);
+      this.objectReflection(query, onlyWhenMatched);
     } else {
       throw new Error('Unsupported breakpoint parameter, please use a string or an object with breakpoints as keys.');
     }
