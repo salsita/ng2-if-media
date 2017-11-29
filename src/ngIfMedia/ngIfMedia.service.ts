@@ -44,14 +44,14 @@ class ReflectionContainer {
 export class NgIfMediaService {
   private elements = new Map();
   private reflections = new Map();
-  private throttleTime = 100;
+  private throttle = 100;
   private isThrottling = false;
   private resized = false;
   private notifyTimeout;
   private parser;
 
   constructor(@Inject(CONFIG) config) {
-    this.throttleTime = config.throttleTime;
+    this.throttle = config.throttle;
     this.parser = new QueryParser(config.breakpoints);
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', this.onResize.bind(this));
@@ -86,7 +86,7 @@ export class NgIfMediaService {
 
       this.notifyTimeout = setTimeout(() => {
         this.throttledNotify();
-      }, this.throttleTime);
+      }, this.throttle);
     } else {
       clearTimeout(this.notifyTimeout);
       this.isThrottling = false;
@@ -100,7 +100,7 @@ export class NgIfMediaService {
     if (!this.isThrottling) {
       this.sendNotifications();
       this.isThrottling = true;
-      setTimeout(() => this.throttledNotify(), this.throttleTime);
+      setTimeout(() => this.throttledNotify(), this.throttle);
     }
   }
 
