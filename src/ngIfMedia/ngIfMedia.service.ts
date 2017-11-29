@@ -3,7 +3,7 @@ import { CONFIG } from './ngIfMedia.config';
 import { QueryParser } from './queryParser';
 
 class ReflectionContainer {
-  constructor(public service: NgIfMediaService, public component) {}
+  constructor(private service, public component) {}
 
   public when(query, matchFn) {
     this.createReflection(query, matchFn, true);
@@ -42,13 +42,13 @@ class ReflectionContainer {
 
 @Injectable()
 export class NgIfMediaService {
-  elements = new Map();
-  reflections = new Map();
-  throttleTime = 100;
-  isThrottling = false;
-  resized = false;
-  notifyTimeout;
-  parser;
+  private elements = new Map();
+  private reflections = new Map();
+  private throttleTime = 100;
+  private isThrottling = false;
+  private resized = false;
+  private notifyTimeout;
+  private parser;
 
   constructor(@Inject(CONFIG) config) {
     this.throttleTime = config.throttleTime;
@@ -59,7 +59,11 @@ export class NgIfMediaService {
   }
 
   public register(component) {
-    return new ReflectionContainer(this, component);
+    return new ReflectionContainer({
+      addSingleReflection: this.addSingleReflection.bind(this),
+      addObjectReflection: this.addObjectReflection.bind(this),
+      removeReflection: this.removeReflection.bind(this)
+    }, component);
   }
 
   public isMedia(query): boolean {
@@ -100,7 +104,7 @@ export class NgIfMediaService {
     }
   }
 
-  public addSingleReflection(container, { query, matchFn = null, onlyWhenMatched = false, newState = null }) {
+  private addSingleReflection(container, { query, matchFn = null, onlyWhenMatched = false, newState = null }) {
     const arr = this.reflections.get(container) || [];
     const matches = this.isMedia(query);
     this.reflections.set(container, arr.concat({query, matchFn, matches, onlyWhenMatched, newState}));
@@ -114,7 +118,7 @@ export class NgIfMediaService {
     }
   }
 
-  public addObjectReflection(container, queryObj, onlyWhenMatched = false) {
+  private addObjectReflection(container, queryObj, onlyWhenMatched = false) {
     for (const query of Object.keys(queryObj)) {
       const matchLogic = queryObj[query];
       if (typeof matchLogic === 'function') {
@@ -131,7 +135,7 @@ export class NgIfMediaService {
     }
   }
 
-  public removeReflection(container) {
+  private removeReflection(container) {
     this.reflections.delete(container);
   }
 
