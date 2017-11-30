@@ -1,1 +1,2 @@
-demo/
+*
+!ng-if-media/*

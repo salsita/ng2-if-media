@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NgIfMediaModule } from '../ng-if-media/ng-if-media.module';
+import { NgIfMediaModule } from '../../ng-if-media/ng-if-media.module';
 
 @NgModule({
   declarations: [

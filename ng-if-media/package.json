@@ -12,6 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/salsita/ng-if-media.git"
   },
+  "main": "./ng-if-media.module.ts",
   "dependencies": {
     "@angular/core": "^5.0.0"
   },
