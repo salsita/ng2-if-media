@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { CONFIG } from './ngIfMedia.config';
+import { CONFIG } from './ng-if-media.config';
 import { QueryParser } from './queryParser';
 
 class ReflectionContainer {

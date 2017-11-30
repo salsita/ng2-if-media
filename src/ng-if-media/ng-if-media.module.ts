@@ -1,8 +1,8 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { NgIfMediaDirective } from './ngIfMedia.directive';
-import { NgIfMediaService } from './ngIfMedia.service';
+import { NgIfMediaDirective } from './ng-if-media.directive';
+import { NgIfMediaService } from './ng-if-media.service';
 import { defaultConfig } from './default.config';
-import { CONFIG } from './ngIfMedia.config';
+import { CONFIG } from './ng-if-media.config';
 import { vendorBreakpoints } from './defaultBreakpoints';
 
 @NgModule({

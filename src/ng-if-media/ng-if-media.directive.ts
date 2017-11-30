@@ -1,7 +1,7 @@
 import {
   Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef
 } from '@angular/core';
-import { NgIfMediaService } from './ngIfMedia.service';
+import { NgIfMediaService } from './ng-if-media.service';
 
 @Directive({
   selector: '[ifMedia], [ngIfMedia]'

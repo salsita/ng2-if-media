@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgIfMediaService } from '../ngIfMedia/ngIfMedia.service';
+import { NgIfMediaService } from '../ng-if-media/ng-if-media.service';
 
 @Component({
   selector: 'app-root',

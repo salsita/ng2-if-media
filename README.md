@@ -1,10 +1,10 @@
-# ngIfMedia
+# ng-if-media
 
 A flexible directive/service module for handling media types and queries in Angular 2+, inspired by [include-media](https://include-media.com/).  
   
 Server rendering ([Universal](https://universal.angular.io/)) compatible.
 
-![ngIfMedia](demo/ng-if-media.gif)
+![ng-if-media](demo/ng-if-media.gif)
 
 ## Installation
 
@@ -43,7 +43,7 @@ const mediaConfig = {
 
 ## Features
 
-`ngIfMedia` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your responsive web-application UI. Window `resize` updates are handled automatically during the component lifetime with a configurable throttle timer.
+`ng-if-media` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your responsive web-application UI. Window `resize` updates are handled automatically during the component lifetime with a configurable throttle timer.
 
 ```html
 <div *ifMedia="<tablet">I will appear below tablet width!</div>
@@ -61,7 +61,7 @@ const mediaConfig = {
 
 ## Directive
 
-When used as an attribute directive, `ngIfMedia` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 4+ animation engine.
+When used as an attribute directive, `ng-if-media` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 4+ animation engine.
 
 ```html
 <nav class="desktop-nav" *ifMedia=">mobile">
@@ -110,7 +110,7 @@ Following CSS, abstractions can be combined with the `and` keyword or comma sepa
 
 ## Service
 
-Sometimes you need more granularity than just showing and hiding some HTML. `ngIfMedia` is also available as a service to simplify working with [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API and related window events using the same methodology and configuration as the directive.
+Sometimes you need more granularity than just showing and hiding some HTML. `ng-if-media` is also available as a service to simplify working with [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API and related window events using the same methodology and configuration as the directive.
 
 ```jsx
 import { NgIfMediaService } from 'ng-if-media';
@@ -180,7 +180,7 @@ this.mediaContainer.when({
 
 ## Configuration
 
-By default, `ngIfMedia` has no abstract configuration and you can use it freely with direct values (eg. `<=640px`) or 3rd party presets. Since project requirements can get very specific, supplying your own custom breakpoints is the most expected usecase.
+By default, `ng-if-media` has no abstract configuration and you can use it freely with direct values (eg. `<=640px`) or 3rd party presets. Since project requirements can get very specific, supplying your own custom breakpoints is the most expected usecase.
 
 You can either create flexible breakpoints that utilize `<, >, =` logical operators (with precision), specify media types and append static suffixes:
 
@@ -220,6 +220,29 @@ vendorBreakpoints: ['bootstrap'],
 throttle: 16.7
 ```
 
+## Licence
+
+MIT License
+
+Copyright (c) 2017 Salsita Software
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 -----
 Created with :muscle: in [Salsita](https://www.salsitasoft.com/)!
