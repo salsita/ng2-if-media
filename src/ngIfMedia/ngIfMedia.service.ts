@@ -114,7 +114,7 @@ export class NgIfMediaService {
       matchFn(matches);
     }
     if (newState && firstLoad) {
-      this.mergeStateMirror(container.component, newState);
+      this.mergeNewState(container.component, newState);
     }
   }
 
@@ -129,7 +129,7 @@ export class NgIfMediaService {
     }
   }
 
-  private mergeStateMirror(component, newState) {
+  private mergeNewState(component, newState) {
     for (const property of Object.keys(newState)) {
       component[property] = newState[property];
     }
@@ -162,7 +162,7 @@ export class NgIfMediaService {
           if (matchFn) {
             matchFn();
           } else if (newState) {
-            this.mergeStateMirror(container.component, newState);
+            this.mergeNewState(container.component, newState);
           }
         }
 
