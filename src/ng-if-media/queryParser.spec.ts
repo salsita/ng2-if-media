@@ -58,7 +58,9 @@ describe('QueryParser', () => {
 
   it('should use proper precision with each query', async(() => {
     const result = parser.parseQuery('<=10.30002em and <widescreenW, braille and <retina3x and <phonePortraitH');
-    expect(result).toBe('(max-width: 10.30002em) and (max-width: 1139px),braille and (max-device-pixel-ratio: 1.9) and (max-height: 799.9) and (orientation: portrait)');
+    const expected = '(max-width: 10.30002em) and (max-width: 1139px), ' +
+      'braille and (max-device-pixel-ratio: 1.9) and (max-height: 799.9) and (orientation: portrait)';
+    expect(result).toBe(expected);
   }));
 
   it('should add media to the beginning', async(() => {

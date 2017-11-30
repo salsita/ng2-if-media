@@ -1,4 +1,4 @@
-[![Dependency Status](https://img.shields.io/david/salsita/dripping-bucket.svg)](https://david-dm.org/salsita/ng-if-media)
+[![Dependency Status](https://img.shields.io/david/salsita/ng-if-media.svg)](https://david-dm.org/salsita/ng-if-media)
 [![devDependency Status](https://img.shields.io/david/dev/salsita/ng-if-media.svg)](https://david-dm.org/salsita/ng-if-media?type=dev)
 ![Downloads](https://img.shields.io/npm/dm/ng-if-media.svg?style=flat)
 ![Licence](https://img.shields.io/npm/l/ng-if-media.svg?style=flat)
@@ -224,6 +224,23 @@ Note: Bootstrap methodology is incompatible with logical operators, due to `xs` 
 breakpoints: { ... },
 vendorBreakpoints: ['bootstrap'],
 throttle: 16.7
+```
+
+
+## Building from code
+
+```
+$ git clone git@github.com:salsita/ng-if-media.git
+$ cd ng-if-media
+$ npm i
+```
+
+The module library code is in `src/ng-if-media/neg-if-media.module.ts`.
+
+```
+$ npm run lint   # to lint the code
+$ npm test       # to run the tests
+$ npm run build  # to run lint, tests, and transpile to ES5 for publishing
 ```
 
 ## Licence
