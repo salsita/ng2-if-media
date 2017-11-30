@@ -203,6 +203,7 @@ breakpoints: {
     param: 'resolution',
     precision: 0.01
   }
+}
 ```
 
 Or handle any other usecase with static string expressions (which cannot use operators):
@@ -240,7 +241,7 @@ The module library code is in `src/ng-if-media/neg-if-media.module.ts`.
 ```
 $ npm run lint   # to lint the code
 $ npm test       # to run the tests
-$ npm run build  # to run lint, tests, and transpile to ES5 for publishing
+$ npm run build  # to build
 ```
 
 ## Licence
