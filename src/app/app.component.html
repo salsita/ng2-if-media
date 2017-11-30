@@ -4,9 +4,9 @@
 
 <main>
   <div class="background"></div>
-  <h1 *ngIfMedia="'<=phone, >=desktop'">{{menu2}}</h1>
-  <input type="text" placeholder="Enter your email" *ngIfMedia="'<phone'">
-  <ul class="lappie" *ngIfMedia="'>phone and <desktop'">
+  <h1 *ifMedia="'<=phone, >=desktop'">{{menu2}}</h1>
+  <input type="text" placeholder="Enter your email" *ifMedia="'<phone'">
+  <ul class="lappie" *ifMedia="'>phone and <desktop'">
     <li>
       <span>1. Enter email</span>
       <input type="text" placeholder="Your real email">

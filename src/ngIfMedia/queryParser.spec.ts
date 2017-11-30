@@ -50,7 +50,6 @@ const breakpoints = {
 };
 
 const parser = new QueryParser(breakpoints);
-// console.log(parser.parseQuery('<=10.30002em and <widescreenW, braille and <retina3x and <phonePortraitH'));
 describe('QueryParser', () => {
   it('should let use breakpoints with no media type and with some media type together', async(() => {
     const result = parser.parseQuery('braille and tablet');
@@ -64,7 +63,7 @@ describe('QueryParser', () => {
 
   it('should add media to the beginning', async(() => {
     const result = parser.parseQuery('braille, tablet');
-    const prefix = result.match(/braille and /);
+    const prefix = result.match(/^braille and /);
     expect(prefix).toBeTruthy();
   }));
 

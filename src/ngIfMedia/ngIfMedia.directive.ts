@@ -15,6 +15,11 @@ export class NgIfMediaDirective implements OnDestroy, OnInit {
     this.media = query;
   }
 
+  @Input()
+  set ifMedia(query: string) {
+    this.media = query;
+  }
+
   constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private mediaService: NgIfMediaService) {}
 
   ngOnInit() {
