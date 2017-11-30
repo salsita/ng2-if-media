@@ -1,3 +1,9 @@
+[![Dependency Status](https://img.shields.io/david/salsita/dripping-bucket.svg)](https://david-dm.org/salsita/ng-if-media)
+[![devDependency Status](https://img.shields.io/david/dev/salsita/ng-if-media.svg)](https://david-dm.org/salsita/ng-if-media?type=dev)
+![Downloads](https://img.shields.io/npm/dm/ng-if-media.svg?style=flat)
+![Licence](https://img.shields.io/npm/l/ng-if-media.svg?style=flat)
+[![Known Vulnerabilities](https://snyk.io/test/github/salsita/ng-if-media/badge.svg)](https://snyk.io/test/github/salsita/ng-if-media)
+
 # ng-if-media
 
 A flexible directive/service module for handling media types and queries in Angular 2+, inspired by [include-media](https://include-media.com/).  

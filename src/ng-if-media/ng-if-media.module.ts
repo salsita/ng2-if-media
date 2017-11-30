@@ -3,7 +3,7 @@ import { NgIfMediaDirective } from './ng-if-media.directive';
 import { NgIfMediaService } from './ng-if-media.service';
 import { defaultConfig } from './default.config';
 import { CONFIG } from './ng-if-media.config';
-import { vendorBreakpoints } from './defaultBreakpoints';
+import { vendorBreakpoints } from './breakpoints';
 
 @NgModule({
   imports: [
