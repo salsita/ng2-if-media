@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { IfMediaModule } from '../../lib/if-media.module';
+import { IfMediaService, IfMediaModule } from '../../lib';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { IfMediaModule } from '../../lib/if-media.module';
       }
     })
   ],
-  providers: [],
+  providers: [IfMediaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

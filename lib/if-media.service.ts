@@ -3,17 +3,17 @@ import { CONFIG } from './if-media.config';
 import { QueryParser } from './queryParser';
 
 class ReflectionContainer {
-  constructor(private service, public component) {}
+  constructor(private service: any, public component: any) {}
 
-  public when(query, matchFn) {
+  public when(query: any, matchFn: any) {
     this.createReflection(query, matchFn, true);
   }
 
-  public onChange(query, matchFn) {
+  public onChange(query: any, matchFn: any) {
     this.createReflection(query, matchFn, false);
   }
 
-  private createReflection(query, matchFn, onlyWhenMatched) {
+  private createReflection(query: any, matchFn: any, onlyWhenMatched: boolean) {
     if (typeof query === 'string') {
       this.singleReflection(query, matchFn, onlyWhenMatched);
     } else if (typeof query === 'object') {
@@ -23,11 +23,11 @@ class ReflectionContainer {
     }
   }
 
-  private objectReflection(queryObj, onlyWhenMatched = false) {
+  private objectReflection(queryObj: any, onlyWhenMatched = false) {
     this.service.addObjectReflection(this, queryObj, onlyWhenMatched);
   }
 
-  private singleReflection(query, matchLogic, onlyWhenMatched = false) {
+  private singleReflection(query: any, matchLogic: any, onlyWhenMatched = false) {
     if (typeof matchLogic === 'function') {
       this.service.addSingleReflection(this, { query, matchFn: matchLogic, onlyWhenMatched });
     } else if (typeof matchLogic === 'object') {
@@ -47,10 +47,10 @@ export class IfMediaService {
   private throttle = 100;
   private isThrottling = false;
   private resized = false;
-  private notifyTimeout;
-  private parser;
+  private notifyTimeout: any;
+  private parser: QueryParser;
 
-  constructor(@Inject(CONFIG) config) {
+  constructor(@Inject(CONFIG) config: any) {
     this.throttle = config.throttle;
     this.parser = new QueryParser(config.breakpoints);
     if (typeof window !== 'undefined') {
@@ -58,7 +58,11 @@ export class IfMediaService {
     }
   }
 
-  public register(component) {
+  public register(component: any): {
+    when: Function;
+    onChange: Function;
+    deregister: Function;
+  } {
     return new ReflectionContainer({
       addSingleReflection: this.addSingleReflection.bind(this),
       addObjectReflection: this.addObjectReflection.bind(this),
@@ -66,7 +70,7 @@ export class IfMediaService {
     }, component);
   }
 
-  public isMedia(query): boolean {
+  public isMedia(query: any): boolean {
     if (typeof window === 'undefined') {
       return false;
     }
@@ -104,7 +108,7 @@ export class IfMediaService {
     }
   }
 
-  private addSingleReflection(container, { query, matchFn = null, onlyWhenMatched = false, newState = null }) {
+  private addSingleReflection(container: any, { query = '', matchFn = (m: boolean) => {}, onlyWhenMatched = false, newState = null }) {
     const arr = this.reflections.get(container) || [];
     const matches = this.isMedia(query);
     this.reflections.set(container, arr.concat({query, matchFn, matches, onlyWhenMatched, newState}));
@@ -118,7 +122,7 @@ export class IfMediaService {
     }
   }
 
-  private addObjectReflection(container, queryObj, onlyWhenMatched = false) {
+  private addObjectReflection(container: any, queryObj: any, onlyWhenMatched = false) {
     for (const query of Object.keys(queryObj)) {
       const matchLogic = queryObj[query];
       if (typeof matchLogic === 'function') {
@@ -129,13 +133,13 @@ export class IfMediaService {
     }
   }
 
-  private mergeNewState(component, newState) {
+  private mergeNewState(component: any, newState: any) {
     for (const property of Object.keys(newState)) {
       component[property] = newState[property];
     }
   }
 
-  private removeReflection(container) {
+  private removeReflection(container: any) {
     this.reflections.delete(container);
   }
 
@@ -159,10 +163,10 @@ export class IfMediaService {
         }
 
         if (resolve) {
-          if (matchFn) {
-            matchFn();
-          } else if (newState) {
+          if (newState) {
             this.mergeNewState(container.component, newState);
+          } else if (matchFn) {
+            matchFn(newMatch);
           }
         }
 
@@ -173,7 +177,7 @@ export class IfMediaService {
     });
   }
 
-  public registerElement(element, query: string) {
+  public registerElement(element: any, query: string) {
     this.elements.set(element, query);
     if (this.isMedia(query)) {
       element.show();
@@ -182,7 +186,7 @@ export class IfMediaService {
     }
   }
 
-  public deregisterElement(element) {
+  public deregisterElement(element: any) {
     this.elements.delete(element);
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IfMediaService } from '../../lib/if-media.service';
+import { IfMediaService } from '../../lib';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +7,7 @@ import { IfMediaService } from '../../lib/if-media.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  mediaContainer;
+  mediaContainer: any;
   menu1short = '<=phone';
   menu1medium = '>phone and <desktop';
   menu1long = '>=desktop';
@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Same as this.mediaContainer.onChange('(orientation: landscape)', { this.orientationFlipCounter++; });
     this.mediaContainer.onChange({
-      '(orientation: landscape)': () => { this.orientationFlipCounter++; }
+      '(orientation: landscape)': (m: boolean) => { this.orientationFlipCounter++; }
     });
   }
 

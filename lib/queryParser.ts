@@ -1,5 +1,5 @@
 export class QueryParser {
-  constructor(private breakpoints) {}
+  constructor(private breakpoints: any) {}
 
   public parseQuery(input: string) {
     const queries = input.split(',');

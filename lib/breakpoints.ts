@@ -1,4 +1,6 @@
-export const vendorBreakpoints = {
+export const vendorBreakpoints: {
+  [key: string]: any;
+} = {
   bootstrap: {
     xs: '(max-width: 575px)',
     sm: '(min-width: 576px)',

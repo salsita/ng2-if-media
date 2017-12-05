@@ -20,8 +20,8 @@ import { vendorBreakpoints } from './breakpoints';
   ]
 })
 export class IfMediaModule {
-  static withConfig(config): ModuleWithProviders {
-    const mergeVendorBreakpoints = (obj, name) => {
+  static withConfig(config: any): ModuleWithProviders {
+    const mergeVendorBreakpoints = (obj: any, name: string) => {
       if (vendorBreakpoints[name]) {
         return Object.assign(obj, vendorBreakpoints[name]);
       } else {
@@ -48,5 +48,3 @@ export class IfMediaModule {
     };
   }
 }
-
-export { IfMediaService };
