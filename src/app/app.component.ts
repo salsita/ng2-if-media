@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgIfMediaService } from '../../ng-if-media/ng-if-media.service';
+import { IfMediaService } from '../../lib/if-media.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
   menu1: string;
   menu2: string;
 
-  constructor(private mediaService: NgIfMediaService) {
+  constructor(private mediaService: IfMediaService) {
     this.mediaContainer = this.mediaService.register(this);
   }
 

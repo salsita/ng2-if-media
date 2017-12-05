@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NgIfMediaModule } from '../../ng-if-media/ng-if-media.module';
+import { IfMediaModule } from '../../lib/if-media.module';
 
 @NgModule({
   declarations: [
@@ -10,7 +10,7 @@ import { NgIfMediaModule } from '../../ng-if-media/ng-if-media.module';
   ],
   imports: [
     BrowserModule,
-    NgIfMediaModule.withConfig({
+    IfMediaModule.withConfig({
       throttle: 100,
       vendorBreakpoints: ['bootstrap'], // or a string, e.g. 'bootstrap'
       breakpoints: {

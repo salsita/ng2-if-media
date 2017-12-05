@@ -1,23 +1,23 @@
-[![Dependency Status](https://img.shields.io/david/salsita/ng-if-media.svg)](https://david-dm.org/salsita/ng-if-media)
-[![devDependency Status](https://img.shields.io/david/dev/salsita/ng-if-media.svg)](https://david-dm.org/salsita/ng-if-media?type=dev)
-![Downloads](https://img.shields.io/npm/dm/ng-if-media.svg?style=flat)
-![Licence](https://img.shields.io/npm/l/ng-if-media.svg?style=flat)
-[![Known Vulnerabilities](https://snyk.io/test/github/salsita/ng-if-media/badge.svg)](https://snyk.io/test/github/salsita/ng-if-media)
+[![Dependency Status](https://img.shields.io/david/salsita/ng2-if-media.svg)](https://david-dm.org/salsita/ng2-if-media)
+[![devDependency Status](https://img.shields.io/david/dev/salsita/ng2-if-media.svg)](https://david-dm.org/salsita/ng2-if-media?type=dev)
+![Downloads](https://img.shields.io/npm/dm/ng2-if-media.svg?style=flat)
+![Licence](https://img.shields.io/npm/l/ng2-if-media.svg?style=flat)
+[![Known Vulnerabilities](https://snyk.io/test/github/salsita/ng2-if-media/badge.svg)](https://snyk.io/test/github/salsita/ng2-if-media)
 
-# ng-if-media
+# ng2-if-media
 
 A flexible directive/service module for handling media types and queries in Angular 2+, inspired by [include-media](https://include-media.com/).  
   
 Server rendering ([Universal](https://universal.angular.io/)) compatible.
 
-![ng-if-media](demo/ng-if-media.gif)
+![ng2-if-media](demo/ng2-if-media.gif)
 
 ## Installation
 
-`npm install --save ng-if-media`
+`npm install --save ng2-if-media`
 
 ```ts
-import { NgIfMediaModule } from 'ng-if-media';
+import { IfMediaModule } from 'ng2-if-media';
 
 const mediaConfig = {
   breakpoints: {
@@ -43,13 +43,13 @@ const mediaConfig = {
 };
 
 @NgModule({
-  imports: [NgIfMediaModule.withConfig(mediaConfig)]
+  imports: [IfMediaModule.withConfig(mediaConfig)]
 })
 ```
 
 ## Features
 
-`ng-if-media` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your responsive web-application UI. Window `resize` updates are handled automatically during the component lifetime with a configurable throttle timer.
+`ng2-if-media` allows using preconfigured breakpoints with `<, >, =` logical operators, enabling expressive and readable control over your responsive web-application UI. Window `resize` updates are handled automatically during the component lifetime with a configurable throttle timer.
 
 ```html
 <div *ifMedia="<tablet">I will appear below tablet width!</div>
@@ -67,7 +67,7 @@ const mediaConfig = {
 
 ## Directive
 
-When used as an attribute directive, `ng-if-media` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 4+ animation engine.
+When used as an attribute directive, `ng2-if-media` works just like `ngIf` by showing or hiding elements based on the active media query. It's therefore compatible with the [void](https://angular.io/guide/animations#the-void-state) state of native Angular 4+ animation engine.
 
 ```html
 <nav class="desktop-nav" *ifMedia=">mobile">
@@ -116,15 +116,15 @@ Following CSS, abstractions can be combined with the `and` keyword or comma sepa
 
 ## Service
 
-Sometimes you need more granularity than just showing and hiding some HTML. `ng-if-media` is also available as a service to simplify working with [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API and related window events using the same methodology and configuration as the directive.
+Sometimes you need more granularity than just showing and hiding some HTML. `ng2-if-media` is also available as a service to simplify working with [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API and related window events using the same methodology and configuration as the directive.
 
 ```jsx
-import { NgIfMediaService } from 'ng-if-media';
+import { IfMediaService } from 'ng2-if-media';
 
 export class AppComponent implements OnDestroy {
   mediaContainer;
 
-  constructor(private mediaService: NgIfMediaService) {
+  constructor(private mediaService: IfMediaService) {
     this.mediaContainer = this.mediaService.register(this);
   }
 
@@ -186,7 +186,7 @@ this.mediaContainer.when({
 
 ## Configuration
 
-By default, `ng-if-media` has no abstract configuration and you can use it freely with direct values (eg. `<=640px`) or 3rd party presets. Since project requirements can get very specific, supplying your own custom breakpoints is the most expected usecase.
+By default, `ng2-if-media` has no abstract configuration and you can use it freely with direct values (eg. `<=640px`) or 3rd party presets. Since project requirements can get very specific, supplying your own custom breakpoints is the most expected usecase.
 
 You can either create flexible breakpoints that utilize `<, >, =` logical operators (with precision), specify media types and append static suffixes:
 
@@ -231,12 +231,12 @@ throttle: 16.7
 ## Building from code
 
 ```
-$ git clone git@github.com:salsita/ng-if-media.git
-$ cd ng-if-media
+$ git clone git@github.com:salsita/ng2-if-media.git
+$ cd ng2-if-media
 $ npm i
 ```
 
-The module library code is in `src/ng-if-media/neg-if-media.module.ts`.
+The module library code is in `src/ng2-if-media/neg-if-media.module.ts`.
 
 ```
 $ npm run lint   # to lint the code

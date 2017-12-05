@@ -1,12 +1,12 @@
 import {
   Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef
 } from '@angular/core';
-import { NgIfMediaService } from './ng-if-media.service';
+import { IfMediaService } from './if-media.service';
 
 @Directive({
   selector: '[ifMedia], [ngIfMedia]'
 })
-export class NgIfMediaDirective implements OnDestroy, OnInit {
+export class IfMediaDirective implements OnDestroy, OnInit {
   private media: string;
   private hidden = true;
 
@@ -20,7 +20,7 @@ export class NgIfMediaDirective implements OnDestroy, OnInit {
     this.media = query;
   }
 
-  constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private mediaService: NgIfMediaService) {}
+  constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private mediaService: IfMediaService) {}
 
   ngOnInit() {
     this.mediaService.registerElement(this, this.media);

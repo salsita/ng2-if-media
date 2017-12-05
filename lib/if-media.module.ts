@@ -1,31 +1,31 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { NgIfMediaDirective } from './ng-if-media.directive';
-import { NgIfMediaService } from './ng-if-media.service';
+import { IfMediaDirective } from './if-media.directive';
+import { IfMediaService } from './if-media.service';
 import { defaultConfig } from './default.config';
-import { CONFIG } from './ng-if-media.config';
+import { CONFIG } from './if-media.config';
 import { vendorBreakpoints } from './breakpoints';
 
 @NgModule({
   imports: [
   ],
   providers: [
-    NgIfMediaService,
+    IfMediaService,
     { provide: CONFIG, useValue: defaultConfig }
   ],
   declarations: [
-    NgIfMediaDirective
+    IfMediaDirective
   ],
   exports: [
-    NgIfMediaDirective
+    IfMediaDirective
   ]
 })
-export class NgIfMediaModule {
+export class IfMediaModule {
   static withConfig(config): ModuleWithProviders {
     const mergeVendorBreakpoints = (obj, name) => {
       if (vendorBreakpoints[name]) {
         return Object.assign(obj, vendorBreakpoints[name]);
       } else {
-        throw new Error(`No breakpoints found for vendor '${name}'. Check your NgIfMedia import config.`);
+        throw new Error(`No breakpoints found for vendor '${name}'. Check your IfMedia import config.`);
       }
     };
 
@@ -49,4 +49,4 @@ export class NgIfMediaModule {
   }
 }
 
-export { NgIfMediaService };
+export { IfMediaService };

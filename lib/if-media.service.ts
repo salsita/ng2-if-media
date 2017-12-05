@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { CONFIG } from './ng-if-media.config';
+import { CONFIG } from './if-media.config';
 import { QueryParser } from './queryParser';
 
 class ReflectionContainer {
@@ -41,7 +41,7 @@ class ReflectionContainer {
 }
 
 @Injectable()
-export class NgIfMediaService {
+export class IfMediaService {
   private elements = new Map();
   private reflections = new Map();
   private throttle = 100;

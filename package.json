@@ -1,5 +1,5 @@
 {
-  "name": "ng-if-media",
+  "name": "ng2-if-media",
   "version": "0.9.0",
   "scripts": {
     "ng": "ng",
@@ -10,11 +10,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/salsita/ng-if-media.git"
+    "url": "git+https://github.com/salsita/ng2-if-media.git"
   },
   "dependencies": {
     "@angular/core": "^5.0.0"
   },
+  "main": "lib/if-media.module.ts",
   "keywords": [
     "angular",
     "universal",
@@ -26,9 +27,9 @@
   "author": "Antonin Jares <antonin@salsitasoft.com> (https://salsitasoft.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/salsita/ng-if-media/issues"
+    "url": "https://github.com/salsita/ng2-if-media/issues"
   },
-  "homepage": "https://github.com/salsita/ng-if-media#readme",
+  "homepage": "https://github.com/salsita/ng2-if-media#readme",
   "devDependencies": {
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",

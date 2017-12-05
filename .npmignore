@@ -1,3 +1,3 @@
 *
-!ng-if-media/*
-ng-if-media/*.spec.ts
+!lib/*
+lib/*.spec.ts
